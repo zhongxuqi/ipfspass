@@ -5,7 +5,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	icore "github.com/ipfs/interface-go-ipfs-core"
 	"github.com/zhongxuqi/ipfspass/common"
+	"github.com/zhongxuqi/ipfspass/ipfs"
 	"github.com/zhongxuqi/ipfspass/utils"
 	"github.com/zhongxuqi/mklibs/mkerr"
 	"github.com/zhongxuqi/mklibs/mklog"
@@ -13,6 +15,8 @@ import (
 
 type Handler struct {
 	mux *http.ServeMux
+
+	ipfs icore.CoreAPI
 }
 
 func NewHandler(ml mklog.Logger) *Handler {
@@ -20,6 +24,7 @@ func NewHandler(ml mklog.Logger) *Handler {
 		mux: http.NewServeMux(),
 	}
 
+	handler.initIPFS(ml)
 	handler.initRouter(ml)
 
 	return handler
@@ -49,4 +54,12 @@ func (s *Handler) initRouter(ml mklog.Logger) {
 	s.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		apiMux.ServeHTTP(w, r)
 	})
+}
+
+func (s *Handler) initIPFS(ml mklog.Logger) {
+	var err error
+	s.ipfs, err = ipfs.CreateIPFS(ml.Context())
+	if err != nil {
+		panic(err)
+	}
 }

@@ -37,3 +37,13 @@ func (s *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	r.Body = ioutil.NopCloser(bytes.NewBuffer(reqRawByte))
 	s.mux.ServeHTTP(w, r)
 }
+
+func (s *Handler) initRouter(ml mklog.Logger) {
+
+	// api
+	apiMux := http.NewServeMux()
+	apiMux.HandleFunc("/api/content", s.HandleContent)
+	s.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
+		apiMux.ServeHTTP(w, r)
+	})
+}

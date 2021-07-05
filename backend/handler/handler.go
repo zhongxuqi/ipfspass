@@ -19,6 +19,9 @@ func NewHandler(ml mklog.Logger) *Handler {
 	handler := &Handler{
 		mux: http.NewServeMux(),
 	}
+
+	handler.initRouter(ml)
+
 	return handler
 }
 

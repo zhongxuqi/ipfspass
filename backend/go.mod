@@ -8,6 +8,7 @@ require (
 	github.com/ipfs/go-ipfs v0.9.0
 	github.com/ipfs/go-ipfs-blockstore v1.0.4 // indirect
 	github.com/ipfs/go-ipfs-config v0.14.0
+	github.com/ipfs/go-ipfs-files v0.0.8
 	github.com/ipfs/go-log/v2 v2.2.0 // indirect
 	github.com/ipfs/interface-go-ipfs-core v0.4.0
 	github.com/klauspost/cpuid/v2 v2.0.7 // indirect

@@ -6,6 +6,8 @@ const (
 	ErrorCodeHandlerNotFound = 4040000
 
 	ErrorCodeInternal = 5000001
+
+	ErrorIPFSFail = 5010002
 )
 
 var (
@@ -15,5 +17,7 @@ var (
 		ErrorCodeHandlerNotFound: "handler not found",
 
 		ErrorCodeInternal: "internal error",
+
+		ErrorIPFSFail: "ipfs fail",
 	}
 )

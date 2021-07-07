@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"sync"
 
@@ -18,6 +19,7 @@ import (
 	"github.com/libp2p/go-libp2p-core/peer"
 	peerstore "github.com/libp2p/go-libp2p-peerstore"
 	ma "github.com/multiformats/go-multiaddr"
+	"github.com/spf13/viper"
 	"github.com/zhongxuqi/mklibs/mklog"
 )
 
@@ -41,9 +43,11 @@ func setupPlugins(externalPluginsPath string) error {
 }
 
 func createTempRepo(ctx context.Context) (string, error) {
-	repoPath, err := ioutil.TempDir("", "ipfs-shell")
-	if err != nil {
-		return "", fmt.Errorf("failed to get temp dir: %s", err)
+	repoPath := viper.GetString("ipfs_path")
+	if _, err := os.Stat(repoPath); os.IsNotExist(err) {
+		if err := os.Mkdir(repoPath, 0700); err != nil {
+			return "", fmt.Errorf("failed to create repo dir: %s", err)
+		}
 	}
 
 	// Create a config with default options and a 2048 bit key

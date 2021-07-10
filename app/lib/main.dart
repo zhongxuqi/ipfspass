@@ -1,10 +1,14 @@
+import 'package:app/utils/localization.dart';
 import 'package:flutter/material.dart';
 import 'db/data.dart';
 import 'dart:async';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'login.dart';
 
 void main() {
-  InitDB();
   runApp(MyApp());
+  InitDB();
 }
 
 class MyApp extends StatelessWidget {
@@ -27,6 +31,16 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: WelcomPage(),
+      localizationsDelegates: [
+        const AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('zh','CH'),
+      ],
     );
   }
 }
@@ -45,6 +59,15 @@ class _WelcomPageState extends State<WelcomPage> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     controller = AnimationController(duration: const Duration(seconds: 2, microseconds: 200), vsync: this);
+    Timer(Duration(seconds: 1, milliseconds: 500), () async {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) =>
+          LoginPage(),
+        ),
+      );
+      return;
+    });
     animation = Tween(begin: 0.0, end: 1.0).animate(controller)
       ..addListener(() {
         if (this == null) return;

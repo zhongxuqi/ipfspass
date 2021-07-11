@@ -9,9 +9,10 @@ class LoginFormItem extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final TextEditingController textEditCtl;
   final bool obscureText;
+  final int maxLines;
 
   LoginFormItem({Key key, @required this.iconData, @required this.hintText, @required this.textEditCtl,
-    @required this.onChanged, @required this.errText, this.obscureText=false}): super(key: key);
+    @required this.onChanged, @required this.errText, this.obscureText=false, this.maxLines = 1}): super(key: key);
 
   Widget build(BuildContext context) {
     return Container(
@@ -32,27 +33,46 @@ class LoginFormItem extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-              child: CupertinoTextField(
-                obscureText: obscureText,
+              height: 36,
+              child: TextField(
                 controller: textEditCtl,
-                scrollPadding: const EdgeInsets.all(0.0),
-                placeholder: hintText,
-                placeholderStyle: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16.0,
-                  textBaseline: TextBaseline.alphabetic,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
+                maxLines: maxLines,
+                minLines: maxLines==null?2:1,
+                scrollPadding: EdgeInsets.all(0),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(0),
+                    gapPadding: 0,
+                    borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 0,
+                        style: BorderStyle.none
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(0),
+                    gapPadding: 0,
+                    borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 0,
+                        style: BorderStyle.none
+                    ),
+                  ),
+                  fillColor: Colors.transparent,
+                  hintText: hintText,
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16.0,
+                    textBaseline: TextBaseline.alphabetic,
+                  ),
                 ),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.0,
                   textBaseline: TextBaseline.alphabetic,
                 ),
-                onChanged: (newText) {
-                  this.onChanged(newText);
-                },
+                onChanged: this.onChanged,
               ),
             ),
           ),

@@ -1,8 +1,10 @@
 import 'package:app/utils/colors.dart';
 import 'package:app/utils/localization.dart';
+import 'package:app/utils/store.dart';
 import 'package:flutter/material.dart';
 
 import 'components/LoginFormItem.dart';
+import 'main.dart';
 import 'utils/iconfonts.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,6 +17,33 @@ class LoginPageState extends State<LoginPage> {
   String registerMasterPasswordErr = '';
   final registerReMasterPasswordCtl = TextEditingController();
   String registerReMasterPasswordErr = '';
+
+  void login() async {
+    var hasErr = false;
+    if (registerMasterPasswordCtl.text.isEmpty) {
+      registerMasterPasswordErr = AppLocalizations.of(context).getLanguageText('required');
+      hasErr = true;
+    }
+    if (registerReMasterPasswordCtl.text.isEmpty) {
+      registerReMasterPasswordErr = AppLocalizations.of(context).getLanguageText('required');
+      hasErr = true;
+    }
+    if (registerMasterPasswordCtl.text.isNotEmpty && registerReMasterPasswordCtl.text.isNotEmpty && registerMasterPasswordCtl.text != registerReMasterPasswordCtl.text) {
+      registerReMasterPasswordErr = AppLocalizations.of(context).getLanguageText('repeat_error');
+      hasErr = true;
+    }
+    if (hasErr) {
+      setState(() {});
+      return;
+    }
+    await StoreUtils.setMasterPassword(registerMasterPasswordCtl.text);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) =>
+        MainPage(),
+      ),
+    );
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,9 +137,7 @@ class LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      onTap: () {
-                        
-                      },
+                      onTap: login,
                     ),
                   ),
                 ],

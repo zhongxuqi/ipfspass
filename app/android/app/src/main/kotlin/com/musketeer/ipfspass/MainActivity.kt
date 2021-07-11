@@ -16,10 +16,10 @@ class MainActivity: FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
             if (call.method == "encryptData") {
                 val req = call.arguments as HashMap<String, String>
-                result.success(Aes.encryptData(req["account"]!!, req["masterPassword"]!!, req["rawData"]!!))
+                result.success(Aes.encryptData(req["masterPassword"]!!, req["rawData"]!!))
             } else if (call.method == "decryptData") {
                 val req = call.arguments as HashMap<String, String>
-                result.success(Aes.decryptData(req["account"]!!, req["masterPassword"]!!, req["encryptedData"]!!))
+                result.success(Aes.decryptData(req["masterPassword"]!!, req["encryptedData"]!!))
             } else if (call.method == "sha256") {
                 val req = call.arguments as HashMap<String, String>
                 result.success(Aes.sha256(req["data"]!!).toByteArray().toHex())

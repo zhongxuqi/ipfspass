@@ -9,10 +9,9 @@ sha256(String data) async {
   return result.toString();
 }
 
-encryptData(String account, String masterPassword, String rawData) async {
+encryptData(String masterPassword, String rawData) async {
   try {
     var result = await platform.invokeMethod('encryptData', {
-      'account': account,
       'masterPassword': masterPassword,
       'rawData': rawData,
     });
@@ -22,10 +21,9 @@ encryptData(String account, String masterPassword, String rawData) async {
   }
 }
 
-decryptData(String account, String masterPassword, String encryptedData) async {
+decryptData(String masterPassword, String encryptedData) async {
   try {
     var result = await platform.invokeMethod('decryptData', {
-      'account': account,
       'masterPassword': masterPassword,
       'encryptedData': encryptedData,
     });

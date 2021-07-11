@@ -28,6 +28,38 @@ class AppLocalizations {
       "en": "Please ReInput Master Password",
       "zh": "请重复输入主密码",
     },
+    "clear_data_alert": {
+      "en": "Are you sure to clear local data?",
+      "zh": "是否确定清除本地数据？",
+    },
+    "cancel": {
+      "en": "Cancel",
+      "zh": "取消"
+    },
+    "confirm": {
+      "en": "Confirm",
+      "zh": "确定"
+    },
+    "wrong_masterpassword": {
+      "en": "Wrong Master Password",
+      "zh": "主密码错误",
+    },
+    "required": {
+      "en": "required",
+      "zh": "必填",
+    },
+    "repeat_error": {
+      "en": "repeat error",
+      "zh": "不一致",
+    },
+    "input_masterpassword_hint": {
+      "en": "Please Input Master Password",
+      "zh": "请输入主密码",
+    },
+    "fingerprint_hint": {
+      "en": "Scan your fingerprint to authenticate",
+      "zh": "请通过指纹认证",
+    },
   };
 
   String getLanguageText(String textID) {

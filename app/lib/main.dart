@@ -1,10 +1,10 @@
 import 'package:app/utils/localization.dart';
 import 'package:flutter/material.dart';
 import 'db/data.dart';
-import 'dart:async';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'login.dart';
+import 'utils/colors.dart';
+import 'welcome.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: WelcomPage(),
+      home: WelcomePage(),
       localizationsDelegates: [
         const AppLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -45,77 +45,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class WelcomPage extends StatefulWidget {
+class MainPage extends StatefulWidget {
 
   @override
-  _WelcomPageState createState() => _WelcomPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _WelcomPageState extends State<WelcomPage> with SingleTickerProviderStateMixin{
-  AnimationController controller;
-  Animation<double> animation;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(duration: const Duration(seconds: 2, microseconds: 200), vsync: this);
-    Timer(Duration(seconds: 1, milliseconds: 500), () async {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) =>
-          LoginPage(),
-        ),
-      );
-      return;
-    });
-    animation = Tween(begin: 0.0, end: 1.0).animate(controller)
-      ..addListener(() {
-        if (this == null) return;
-        setState(() {
-          // the state that has changed here is the animation object’s value
-        });
-      });
-    controller.forward();
-  }
+class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("images/background.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Opacity(
-            opacity: animation.value,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(bottom: 10.0),
-                  child: Center(
-                    child: Image.asset(
-                      'images/logo_front.png',
-                      height: 180.0,
-                      width: 180.0,
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Text(
-                    'IPFS Pass',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      backgroundColor: ColorUtils.themeDarkColor,
+      body: Padding(
+        padding: new EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        child: Text("Main Page", 
+          style: TextStyle(
+            color: ColorUtils.white,
           ),
         ),
       ),

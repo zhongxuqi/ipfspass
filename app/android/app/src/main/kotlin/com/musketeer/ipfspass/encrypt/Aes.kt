@@ -19,18 +19,18 @@ object Aes {
         return md.digest().toList()
     }
 
-    fun encryptData(account: String, masterPassword: String, rawData: String): String {
+    fun encryptData(masterPassword: String, rawData: String): String {
         val key = sha256(masterPassword)
-        val iv = sha256("ipfspass"+masterPassword).subList(0, 16)
+        val iv = sha256("ipfspass-f0znNj85f4pz-"+masterPassword).subList(0, 16)
         val cipher = Cipher.getInstance(CBC_PKCS5_PADDING)
         cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(key.toByteArray(), AES), IvParameterSpec(iv.toByteArray()))
         val encrypted = cipher.doFinal(rawData.toByteArray())
         return encrypted.toHex()
     }
 
-    fun decryptData(account: String, masterPassword: String, encryptedData: String): String {
+    fun decryptData(masterPassword: String, encryptedData: String): String {
         val key = sha256(masterPassword)
-        val iv = sha256("ipfspass"+masterPassword).subList(0, 16)
+        val iv = sha256("ipfspass-f0znNj85f4pz-"+masterPassword).subList(0, 16)
         val cipher = Cipher.getInstance(CBC_PKCS5_PADDING)
         cipher.init(Cipher.DECRYPT_MODE, SecretKeySpec(key.toByteArray(), AES), IvParameterSpec(iv.toByteArray()))
         try {

@@ -12,9 +12,17 @@ class AppLocalizations {
   }
 
   static Map<String, Map<String, String>> _languageTextMap = {
+    "master_password": {
+      "en": "Master Password",
+      "zh": "主密码",
+    },
     "init_master_password": {
       "en": "Init master password",
       "zh": "设置主密码",
+    },
+    "register_masterpassword_hint": {
+      "en": "Please Input Master Password",
+      "zh": "请输入主密码",
     },
   };
 

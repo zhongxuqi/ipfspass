@@ -1,3 +1,4 @@
+import 'package:app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,16 +16,16 @@ class LoginFormItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xfff2f4f8),
+        color: ColorUtils.themeLightColor,
         borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       child: Row(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(6.0),
+            padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 0.0, bottom: 8.0),
             child: Icon(
               iconData,
-              color: Colors.black54,
+              color: ColorUtils.blue,
               size: 25.0,
             ),
           ),
@@ -38,15 +39,15 @@ class LoginFormItem extends StatelessWidget {
                 placeholder: hintText,
                 placeholderStyle: TextStyle(
                   color: Colors.grey,
-                  fontSize: 15.0,
+                  fontSize: 16.0,
                   textBaseline: TextBaseline.alphabetic,
                 ),
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                 ),
                 style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 15.0,
+                  color: Colors.white,
+                  fontSize: 16.0,
                   textBaseline: TextBaseline.alphabetic,
                 ),
                 onChanged: (newText) {
@@ -56,7 +57,7 @@ class LoginFormItem extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 5.0),
+            margin: EdgeInsets.only(right: 8.0),
             child: Text(
               errText,
               style: TextStyle(

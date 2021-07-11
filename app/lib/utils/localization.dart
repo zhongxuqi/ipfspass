@@ -24,6 +24,10 @@ class AppLocalizations {
       "en": "Please Input Master Password",
       "zh": "请输入主密码",
     },
+    "register_remasterpassword_hint": {
+      "en": "Please ReInput Master Password",
+      "zh": "请重复输入主密码",
+    },
   };
 
   String getLanguageText(String textID) {

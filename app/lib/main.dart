@@ -53,12 +53,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var keywordCtl = TextEditingController();
   var focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: ColorUtils.themeDarkColor,
       body: Padding(
         padding: new EdgeInsets.only(top: MediaQuery.of(context).padding.top),
@@ -71,7 +73,7 @@ class _MainPageState extends State<MainPage> {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
-                        Scaffold.of(context).openDrawer();
+                        _scaffoldKey.currentState.openDrawer();
                       },
                       child: Container(
                         width: 50.0,
@@ -188,6 +190,12 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
+      ),
+      drawer: Container(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        color: ColorUtils.themeLightColor,
+        width: 200.0,
+        child: Container()
       ),
     );
   }

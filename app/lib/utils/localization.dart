@@ -60,6 +60,10 @@ class AppLocalizations {
       "en": "Scan your fingerprint to authenticate",
       "zh": "请通过指纹认证",
     },
+    "keyword_hint": {
+      "en": "Please Input Keyword",
+      "zh": "请输入关键字",
+    },
   };
 
   String getLanguageText(String textID) {

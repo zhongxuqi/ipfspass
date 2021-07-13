@@ -11,4 +11,9 @@ class IconFonts {
   static const IconData bars1 = IconData(0xe646, fontFamily: 'iconfont');
   static const IconData search1 = IconData(0xe656, fontFamily: 'iconfont');
   static const IconData sort = IconData(0xe600, fontFamily: 'iconfont');
+  static const IconData all = IconData(0xe62e, fontFamily: 'iconfont');
+  static const IconData hkmessage = IconData(0xe617, fontFamily: 'iconfont');
+  static const IconData update = IconData(0xe641, fontFamily: 'iconfont');
+  static const IconData setting = IconData(0xe66f, fontFamily: 'iconfont');
+  static const IconData chat = IconData(0xe6e3, fontFamily: 'iconfont');
 }

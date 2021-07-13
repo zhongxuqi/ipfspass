@@ -10,4 +10,5 @@ class ColorUtils {
   static const Color green = const Color(0xff66be54);
   static const Color orange = const Color(0xfff57f16);
   static const Color grey = const Color(0xffa4a5a5);
+  static const Color transparent = Colors.transparent;
 }

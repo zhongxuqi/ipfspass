@@ -1,8 +1,12 @@
 import 'package:app/utils/localization.dart';
+import 'package:app/utils/store.dart';
 import 'package:flutter/material.dart';
+import 'components/AlertDialog.dart';
+import 'components/DrawerButton.dart';
 import 'db/data.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'login.dart';
 import 'utils/colors.dart';
 import 'utils/iconfonts.dart';
 import 'welcome.dart';
@@ -56,6 +60,7 @@ class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var keywordCtl = TextEditingController();
   var focusNode = FocusNode();
+  int _currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -193,9 +198,147 @@ class _MainPageState extends State<MainPage> {
       ),
       drawer: Container(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        color: ColorUtils.themeLightColor,
+        color: ColorUtils.themeColor,
         width: 200.0,
-        child: Container()
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      <Widget>[
+                        Container(
+                          width: 200.0,
+                          margin: EdgeInsets.only(top: 10.0, bottom: 5),
+                          padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+                          child: Text(
+                            AppLocalizations.of(context).getLanguageText('navigation'),
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: ColorUtils.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('all_content'),
+                            iconData: IconFonts.all,
+                            isActive: _currentPageIndex == 0,
+                            onClick: () {
+                              setState(() {
+                                _currentPageIndex = 0;
+                                Navigator.pop(context);
+                              });
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('secret_message'),
+                            iconData: IconFonts.hkmessage,
+                            isActive: _currentPageIndex == 1,
+                            onClick: () {
+                              setState(() {
+                                _currentPageIndex = 1;
+                                Navigator.pop(context);
+                              });
+                            },
+                          ),
+                        ),
+                        Container(
+                          width: 200.0,
+                          margin: EdgeInsets.only(top: 10.0, bottom: 5),
+                          padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+                          child: Text(
+                            AppLocalizations.of(context).getLanguageText('personal'),
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: ColorUtils.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('sync_data'),
+                            iconData: IconFonts.update,
+                            isActive: false,
+                            onClick: () {
+                              Navigator.of(context).pop();
+                              // todo 同步数据
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('modify_master_password'),
+                            iconData: IconFonts.lock,
+                            isActive: false,
+                            onClick: () {
+                              Navigator.of(context).pop();
+                              // todo 修改主密码
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('logout'),
+                            iconData: IconFonts.arrowLeft,
+                            isActive: false,
+                            onClick: () {
+                              showAlertDialog(context, AppLocalizations.of(context).getLanguageText('clear_data_alert'),
+                                callback: () async {
+                                  StoreUtils.setMasterPassword("");
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>
+                                      LoginPage(),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('settings'),
+                            iconData: IconFonts.setting,
+                            isActive: false,
+                            onClick: () {
+                              Navigator.of(context).pop();
+                              // todo 设置
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('feedback'),
+                            iconData: IconFonts.chat,
+                            isActive: false,
+                            onClick: () {
+                              // todo 反馈
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -64,6 +64,42 @@ class AppLocalizations {
       "en": "Please Input Keyword",
       "zh": "请输入关键字",
     },
+    "navigation": {
+      "en": "Navigation",
+      "zh": "导航",
+    },
+    "all_content": {
+      "en": "All Content",
+      "zh": "所有内容",
+    },
+    "secret_message": {
+      "en": "Secret Message",
+      "zh": "密信",
+    },
+    "personal": {
+      "en": "Personal",
+      "zh": "个人",
+    },
+    "sync_data": {
+      "en": "Sync Data",
+      "zh": "同步数据",
+    },
+    "modify_master_password": {
+      "en": "Modify MasterPass",
+      "zh": "修改主密码",
+    },
+    "logout": {
+      "en": "Logout",
+      "zh": "注销",
+    },
+    "settings": {
+      "en": "Settings",
+      "zh": "设置",
+    },
+    "feedback": {
+      "en": "Feedback",
+      "zh": "反馈",
+    },
   };
 
   String getLanguageText(String textID) {

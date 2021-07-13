@@ -1,37 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'components/content_topbar.dart';
-import 'language/language.dart';
+import 'package:uuid/uuid.dart';
+import 'components/ContentTopbar.dart';
+import 'utils/iconfonts.dart';
+import 'utils/localization.dart';
 import 'utils/content.dart';
 import 'db/data.dart';
-import 'utils/user.dart' as user;
-import 'types/types.dart';
+import 'common/types.dart';
 import 'components/toast.dart';
-import 'net/mypass.dart' as mypass;
-import 'utils/applepay.dart';
 import 'dart:convert';
-import './components/utils.dart';
-import 'components/add_key.dart';
+import 'utils/store.dart';
+import 'components/AddKeyDialog.dart';
 import 'dart:math';
-import 'utils/color.dart' as colorUtil;
-import 'utils/icon_fonts.dart';
+import 'utils/colors.dart';
 import 'dart:async';
 import "package:otp/otp.dart";
-import 'qr_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'components/pay.dart' as pay;
+import 'QrScanner.dart';
 
-class ContentScreen extends StatefulWidget {
+class ContentPage extends StatefulWidget {
   final VoidCallback refreshCallback;
   final String contentID;
   final int contentType;
   final String tagName;
 
-  ContentScreen({Key key, this.contentID, @required this.contentType, @required this.refreshCallback, @required this.tagName}):super(key: key);
+  ContentPage({Key key, this.contentID, @required this.contentType, @required this.refreshCallback, @required this.tagName}):super(key: key);
 
   @override
-  State<StatefulWidget> createState() => ContentScreenState(
+  State<StatefulWidget> createState() => ContentPageState(
     contentID: this.contentID,
     refreshCallback: this.refreshCallback,
     contentType: this.contentType,
@@ -39,7 +36,7 @@ class ContentScreen extends StatefulWidget {
   );
 }
 
-class ContentScreenState extends State<ContentScreen> {
+class ContentPageState extends State<ContentPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final VoidCallback refreshCallback;
@@ -86,7 +83,7 @@ class ContentScreenState extends State<ContentScreen> {
   final GlobalKey<ContentTextItemState> _hintWordScaffoldKey = GlobalKey<ContentTextItemState>();
   String hintWord = '';
 
-  ContentScreenState({this.contentID, this.contentType, @required this.refreshCallback, @required this.tagName});
+  ContentPageState({this.contentID, this.contentType, @required this.refreshCallback, @required this.tagName});
 
   @override
   initState() {
@@ -99,9 +96,8 @@ class ContentScreenState extends State<ContentScreen> {
     if (contentID != null) {
       var instance = getDataModel();
       var contentInfo = await instance.getContentInfo(contentID);
-      var account = await user.getAccount();
-      var masterPassword = await user.getMasterPassword();
-      contentDetail = await convert2ContentDetail(account, masterPassword, contentInfo);
+      var masterPassword = await StoreUtils.getMasterPassword();
+      contentDetail = await convert2ContentDetail(masterPassword, contentInfo);
       renderContentDetail();
     }
   }
@@ -118,15 +114,6 @@ class ContentScreenState extends State<ContentScreen> {
         break;
       case TOTPType:
         totp = contentDetail.content;
-        break;
-      case BlockChainType:
-        var detailMap = json.decode(contentDetail.content);
-        coinName = detailMap['coinName'];
-        address = detailMap['address'];
-        pubkey = detailMap['pubKey'];
-        prikey = detailMap['priKey'];
-        keyStore = detailMap['keyStore'];
-        hintWord = detailMap['hintWord'];
         break;
     }
     extra.clear();
@@ -158,26 +145,6 @@ class ContentScreenState extends State<ContentScreen> {
       case TOTPType:
         if (_totpScaffoldKey.currentState != null) {
           _totpScaffoldKey.currentState.setValue(totp);
-        }
-        break;
-      case BlockChainType:
-        if (_coinNameScaffoldKey.currentState != null) {
-          _coinNameScaffoldKey.currentState.setValue(coinName);
-        }
-        if (_addressScaffoldKey.currentState != null) {
-          _addressScaffoldKey.currentState.setValue(address);
-        }
-        if (_pubkeyScaffoldKey.currentState != null) {
-          _pubkeyScaffoldKey.currentState.setValue(pubkey);
-        }
-        if (_prikeyScaffoldKey.currentState != null) {
-          _prikeyScaffoldKey.currentState.setValue(prikey);
-        }
-        if (_keyStoreScaffoldKey.currentState != null) {
-          _keyStoreScaffoldKey.currentState.setValue(keyStore);
-        }
-        if (_hintWordScaffoldKey.currentState != null) {
-          _hintWordScaffoldKey.currentState.setValue(hintWord);
         }
         break;
     }
@@ -294,29 +261,9 @@ class ContentScreenState extends State<ContentScreen> {
       case TOTPType:
         content = totp;
         break;
-      case BlockChainType:
-        var walletInternalDetail = WalletDetail(
-          coinName: coinName,
-          address: address,
-          pubKey: pubkey,
-          priKey: prikey,
-          keyStore: keyStore,
-          hintWord: hintWord,
-        );
-        content = json.encode({
-          'coinName': walletInternalDetail.coinName,
-          'address': walletInternalDetail.address,
-          'pubKey': walletInternalDetail.pubKey,
-          'priKey': walletInternalDetail.priKey,
-          'keyStore': walletInternalDetail.keyStore,
-          'hintWord': walletInternalDetail.hintWord,
-        });
-        break;
     }
     var newExtra = Map<String, dynamic>();
     newExtra.addAll(this.extra);
-    var account = await user.getAccount();
-    var version = await user.getVersion();
     var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     var tags = <String>[];
     if (this.contentDetail != null && this.contentDetail.tags != null) {
@@ -331,68 +278,23 @@ class ContentScreenState extends State<ContentScreen> {
     }
     var contentDetail = ContentDetail(contentID, currTime, title, content, "blue", contentType, this.account, newExtra, tags);
     if (contentID == null) {
-      mypass.createContent(contentDetail).then((resp) async {
-        isSubmitting = false;
-        Map<String, dynamic> createResp = json.decode(resp.body);
-        if (createResp['errno'] != 0) {
-          var errMsg = AppLocalizations.of(context).getLanguageText('net_error');
-          switch (createResp['errno']) {
-            case 4000018:
-              showExpiryDialog(context);
-              break;
-            case 4000000:
-              applePay();
-              break;
-            default:
-              showErrorToast(errMsg);
-              break;
-          }
-          return;
-        }
-        Map<String, dynamic> contentResp = createResp['data'];
-        contentDetail.content_id = contentResp['content_id'];
-        var masterPassword = await user.getMasterPassword();
-        var contentInfo = await convert2ContentInfo(account, masterPassword, version, contentDetail);
-        getDataModel().insertContentInfo(contentInfo);
-        this.refreshCallback();
-        contentID = contentDetail.content_id;
-        this.contentDetail = contentDetail;
-        setEditable(false);
-        renderContentDetail();
-      }).catchError((err) {
-        isSubmitting = false;
-        showErrorToast(AppLocalizations.of(context).getLanguageText('net_error'));
-      });
+      contentDetail.content_id = Uuid().v4();
+      var masterPassword = await StoreUtils.getMasterPassword();
+      var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
+      getDataModel().insertContentInfo(contentInfo);
+      this.refreshCallback();
+      contentID = contentDetail.content_id;
+      this.contentDetail = contentDetail;
+      setEditable(false);
+      renderContentDetail();
     } else {
-      mypass.updateContent(contentDetail).then((resp) async {
-        isSubmitting = false;
-        Map<String, dynamic> createResp = json.decode(resp.body);
-        if (createResp['errno'] != 0) {
-          var errMsg = AppLocalizations.of(context).getLanguageText('net_error');
-          switch (createResp['errno']) {
-            case 4000018:
-              showExpiryDialog(context);
-              break;
-            case 4000000:
-              applePay();
-              break;
-            default:
-              showErrorToast(errMsg);
-              break;
-          }
-          return;
-        }
-        var masterPassword = await user.getMasterPassword();
-        var contentInfo = await convert2ContentInfo(account, masterPassword, version, contentDetail);
-        getDataModel().updateContentInfo(contentInfo);
-        this.refreshCallback();
-        this.contentDetail = contentDetail;
-        setEditable(false);
-        renderContentDetail();
-      }).catchError((err) {
-        isSubmitting = false;
-        showErrorToast(AppLocalizations.of(context).getLanguageText('net_error'));
-      });
+      var masterPassword = await StoreUtils.getMasterPassword();
+      var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
+      getDataModel().updateContentInfo(contentInfo);
+      this.refreshCallback();
+      this.contentDetail = contentDetail;
+      setEditable(false);
+      renderContentDetail();
     }
   }
 
@@ -464,75 +366,6 @@ class ContentScreenState extends State<ContentScreen> {
           },
         ));
         break;
-      case BlockChainType:
-        formRows.add(ContentTextItem(
-          key: _coinNameScaffoldKey,
-          keyName: AppLocalizations.of(context).getLanguageText('coinNameOptional'),
-          value: coinName,
-          obscureText: true,
-          hintText: AppLocalizations.of(context).getLanguageText('inputCoinNameHint'),
-          editable: editable,
-          onChange: (value) {
-            coinName = value;
-          },
-        ));
-        formRows.add(ContentTextItem(
-          key: _addressScaffoldKey,
-          keyName: AppLocalizations.of(context).getLanguageText('addressOptional'),
-          value: address,
-          obscureText: true,
-          hintText: AppLocalizations.of(context).getLanguageText('inputAddressHint'),
-          editable: editable,
-          onChange: (value) {
-            address = value;
-          },
-        ));
-        formRows.add(ContentTextItem(
-          key: _pubkeyScaffoldKey,
-          keyName: AppLocalizations.of(context).getLanguageText('pubKeyOptional'),
-          value: pubkey,
-          obscureText: true,
-          hintText: AppLocalizations.of(context).getLanguageText('inputPubKeyHint'),
-          editable: editable,
-          onChange: (value) {
-            pubkey = value;
-          },
-        ));
-        formRows.add(ContentTextItem(
-          key: _prikeyScaffoldKey,
-          keyName: AppLocalizations.of(context).getLanguageText('priKeyOptional'),
-          value: prikey,
-          obscureText: true,
-          hintText: AppLocalizations.of(context).getLanguageText('inputPriKeyHint'),
-          editable: editable,
-          onChange: (value) {
-            prikey = value;
-          },
-        ));
-        formRows.add(ContentTextItem(
-          key: _keyStoreScaffoldKey,
-          keyName: AppLocalizations.of(context).getLanguageText('keyStoreOptional'),
-          value: keyStore,
-          obscureText: true,
-          maxLines: null,
-          hintText: AppLocalizations.of(context).getLanguageText('inputKeyStoreHint'),
-          editable: editable,
-          onChange: (value) {
-            keyStore = value;
-          },
-        ));
-        formRows.add(ContentTextItem(
-          key: _hintWordScaffoldKey,
-          keyName: AppLocalizations.of(context).getLanguageText('hintWordOptional'),
-          value: hintWord,
-          obscureText: true,
-          hintText: AppLocalizations.of(context).getLanguageText('inputHintWordHint'),
-          editable: editable,
-          onChange: (value) {
-            hintWord = value;
-          },
-        ));
-        break;
     }
     extra.forEach((key, value) {
       formRows.add(ContentTextItem(
@@ -577,24 +410,22 @@ class ContentScreenState extends State<ContentScreen> {
             ),
           ),
           onTap: () {
-            pay.checkExpiredTime(context, () {
-              showAddKeyDialog(context,
-                callback: (keyName) {
-                  if (extra.containsKey(keyName)) {
-                    showErrorToast(AppLocalizations.of(context).getLanguageText('keyExists'));
-                  } else {
-                    Navigator.of(context).pop();
-                    setState(() {
-                      extra[keyName] = '';
-                      _extraScaffoldKeyMap[keyName] = GlobalKey<ContentTextItemState>();
-                    });
-                  }
-                },
-                keyName: AppLocalizations.of(context).getLanguageText('keyName'),
-                keyNameHint: AppLocalizations.of(context).getLanguageText('keyNameHint'),
-                initValue: '',
-              );
-            });
+            showAddKeyDialog(context,
+              callback: (keyName) {
+                if (extra.containsKey(keyName)) {
+                  showErrorToast(AppLocalizations.of(context).getLanguageText('keyExists'));
+                } else {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    extra[keyName] = '';
+                    _extraScaffoldKeyMap[keyName] = GlobalKey<ContentTextItemState>();
+                  });
+                }
+              },
+              keyName: AppLocalizations.of(context).getLanguageText('keyName'),
+              keyNameHint: AppLocalizations.of(context).getLanguageText('keyNameHint'),
+              initValue: '',
+            );
           },
         ),
       ));
@@ -1022,7 +853,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
               padding: EdgeInsets.all(10.0),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: colorUtil.getPasswordColor(),
+                color: ColorUtils.getPasswordColor(),
                 borderRadius: BorderRadius.circular(5.0),
               ),
               child: Text(
@@ -1047,7 +878,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                   value: passwordLen,
                   max: 24,
                   min: 6,
-                  activeColor: colorUtil.getPasswordColor(),
+                  activeColor: ColorUtils.getPasswordColor(),
                   onChanged: (double val) {
                     setState(() {
                       passwordLen = val;
@@ -1060,7 +891,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
               child: Text(
                 passwordLen.toInt().toString(),
                 style: TextStyle(
-                  color: colorUtil.getPasswordColor(),
+                  color: ColorUtils.getPasswordColor(),
                   fontSize: 15.0,
                 ),
               ),
@@ -1081,7 +912,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                         margin: EdgeInsets.only(right: 10.0,),
                         child: Icon(
                           highcase?IconFonts.check_box_outline:IconFonts.check_box_outline_bl,
-                          color: colorUtil.getPasswordColor(),
+                          color: ColorUtils.getPasswordColor(),
                           size: 20.0,
                         ),
                       ),
@@ -1094,7 +925,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                     Text(
                       'A-Z',
                       style: TextStyle(
-                        color: colorUtil.getPasswordColor(),
+                        color: ColorUtils.getPasswordColor(),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1111,7 +942,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                         margin: EdgeInsets.only(right: 10.0),
                         child: Icon(
                           lowcase?IconFonts.check_box_outline:IconFonts.check_box_outline_bl,
-                          color: colorUtil.getPasswordColor(),
+                          color: ColorUtils.getPasswordColor(),
                           size: 20.0,
                         ),
                       ),
@@ -1124,7 +955,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                     Text(
                       'a-z',
                       style: TextStyle(
-                        color: colorUtil.getPasswordColor(),
+                        color: ColorUtils.getPasswordColor(),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1141,7 +972,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                         margin: EdgeInsets.only(right: 10.0),
                         child: Icon(
                           number?IconFonts.check_box_outline:IconFonts.check_box_outline_bl,
-                          color: colorUtil.getPasswordColor(),
+                          color: ColorUtils.getPasswordColor(),
                           size: 20.0,
                         ),
                       ),
@@ -1154,7 +985,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                     Text(
                       '0-9',
                       style: TextStyle(
-                        color: colorUtil.getPasswordColor(),
+                        color: ColorUtils.getPasswordColor(),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1177,7 +1008,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                         margin: EdgeInsets.only(right: 10.0),
                         child: Icon(
                           symbol1?IconFonts.check_box_outline:IconFonts.check_box_outline_bl,
-                          color: colorUtil.getPasswordColor(),
+                          color: ColorUtils.getPasswordColor(),
                           size: 20.0,
                         ),
                       ),
@@ -1190,7 +1021,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                     Text(
                       '!',
                       style: TextStyle(
-                        color: colorUtil.getPasswordColor(),
+                        color: ColorUtils.getPasswordColor(),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1207,7 +1038,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                         margin: EdgeInsets.only(right: 10.0),
                         child: Icon(
                           symbol2?IconFonts.check_box_outline:IconFonts.check_box_outline_bl,
-                          color: colorUtil.getPasswordColor(),
+                          color: ColorUtils.getPasswordColor(),
                           size: 20.0,
                         ),
                       ),
@@ -1220,7 +1051,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                     Text(
                       '@',
                       style: TextStyle(
-                        color: colorUtil.getPasswordColor(),
+                        color: ColorUtils.getPasswordColor(),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1237,7 +1068,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                         margin: EdgeInsets.only(right: 10.0),
                         child: Icon(
                           symbol3?IconFonts.check_box_outline:IconFonts.check_box_outline_bl,
-                          color: colorUtil.getPasswordColor(),
+                          color: ColorUtils.getPasswordColor(),
                           size: 20.0,
                         ),
                       ),
@@ -1250,7 +1081,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                     Text(
                       '#',
                       style: TextStyle(
-                        color: colorUtil.getPasswordColor(),
+                        color: ColorUtils.getPasswordColor(),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -1267,7 +1098,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                         margin: EdgeInsets.only(right: 10.0),
                         child: Icon(
                           symbol4?IconFonts.check_box_outline:IconFonts.check_box_outline_bl,
-                          color: colorUtil.getPasswordColor(),
+                          color: ColorUtils.getPasswordColor(),
                           size: 20.0,
                         ),
                       ),
@@ -1280,7 +1111,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                     Text(
                       '\$',
                       style: TextStyle(
-                        color: colorUtil.getPasswordColor(),
+                        color: ColorUtils.getPasswordColor(),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

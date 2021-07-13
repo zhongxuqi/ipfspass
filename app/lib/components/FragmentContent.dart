@@ -1,8 +1,10 @@
 import 'package:app/utils/content.dart';
+import 'package:app/utils/iconfonts.dart';
 import 'package:app/utils/store.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
 import '../common/types.dart';
+import '../content.dart';
 import 'AlertDialog.dart';
 import 'package:app/utils/localization.dart';
 import '../db/data.dart';
@@ -10,25 +12,25 @@ import '../utils/colors.dart';
 import 'TagCard.dart';
 import 'AddKeyDialog.dart';
 import 'LoadingDialog.dart';
+import 'FormInput.dart';
+import 'Toast.dart';
 
-class PageAllContent extends StatefulWidget {
-  PageAllContentState state;
+class FragmentContent extends StatefulWidget {
   String keyword = '';
   final VoidCallback clearKeyWord;
 
-  PageAllContent({Key key, @required this.clearKeyWord}): super(key: key);
+  FragmentContent({Key key, @required this.clearKeyWord}): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    state = PageAllContentState(
+    return FragmentContentState(
       keyword: keyword,
       clearKeyWord: clearKeyWord,
     );
-    return state;
   }
 }
 
-class PageAllContentState extends State<PageAllContent> {
+class FragmentContentState extends State<FragmentContent> {
   final VoidCallback clearKeyWord;
 
   int level = 0;
@@ -43,7 +45,7 @@ class PageAllContentState extends State<PageAllContent> {
   List<ContentDetail> digitalWalletList = <ContentDetail>[];
   List<String> tags = <String>[];
 
-  PageAllContentState({String keyword, @required this.clearKeyWord}) {
+  FragmentContentState({String keyword, @required this.clearKeyWord}) {
     _keyword = keyword;
   }
 
@@ -362,7 +364,7 @@ class PageAllContentState extends State<PageAllContent> {
                     onClickListener: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ContentScreen(
+                        MaterialPageRoute(builder: (context) => ContentPage(
                           contentType: item.type,
                           contentID: item.content_id,
                           refreshCallback: () async {
@@ -384,8 +386,6 @@ class PageAllContentState extends State<PageAllContent> {
                                 color: Colors.orange,
                                 text: AppLocalizations.of(context).getLanguageText('removeFromTag'),
                                 onClickListener: () async {
-                                  var account = await user.getAccount();
-                                  var version = await user.getVersion();
                                   var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
                                   List<ContentDetail> contentDetails = List<ContentDetail>();
                                   contentDetails.add(ContentDetail(
@@ -401,36 +401,12 @@ class PageAllContentState extends State<PageAllContent> {
                                   ));
                                   Navigator.of(context).pop();
                                   showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
-                                  mypass.updateContents(contentDetails).then((resp) async {
-                                    Map<String, dynamic> createResp = json.decode(resp.body);
-                                    if (createResp['errno'] != 0) {
-                                      var errMsg = AppLocalizations.of(this.context).getLanguageText('net_error');
-                                      switch (createResp['errno']) {
-                                        case 4000018:
-                                          showExpiryDialog(this.context);
-                                          break;
-                                        case 4000000:
-                                          applePay();
-                                          break;
-                                        default:
-                                          showErrorToast(errMsg);
-                                          break;
-                                      }
-                                      return;
-                                    }
-                                    var masterPassword = await user.getMasterPassword();
-                                    for (var contentDetail in contentDetails) {
-                                      var contentInfo = await convert2ContentInfo(
-                                          account, masterPassword, version,
-                                          contentDetail);
-                                      getDataModel().updateContentInfo(contentInfo);
-                                    }
-                                    initContentList();
-                                  }).catchError((err) {
-                                    showErrorToast(AppLocalizations.of(this.context).getLanguageText('net_error'));
-                                  }).whenComplete(() {
-                                    Navigator.of(this.context).pop();
-                                  });
+                                  var masterPassword = await StoreUtils.getMasterPassword();
+                                  for (var contentDetail in contentDetails) {
+                                    var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
+                                    getDataModel().updateContentInfo(contentInfo);
+                                  }
+                                  initContentList();
                                 },
                               ):Container(),
                               ActionItem(
@@ -482,7 +458,7 @@ class PageAllContentState extends State<PageAllContent> {
                       color: const Color(0xFF24292E),
                     ),
                     child: Icon(
-                      IconFonts.arrow_left,
+                      IconFonts.arrowLeft,
                       color: Colors.white,
                       size: 20.0,
                     ),
@@ -511,7 +487,7 @@ class PageAllContentState extends State<PageAllContent> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) =>
-                          ContentScreen(
+                          ContentPage(
                             contentType: contentType,
                             refreshCallback: () async {
                               initContentList();
@@ -558,23 +534,19 @@ class ContentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var itemIcon = "images/ic_tag.png";
-    var itemIconColor = colorUtil.getTagColor();
+    var itemIconColor = ColorUtils.getTagColor();
     switch (contentDetail.type) {
       case PasswordType:
         itemIcon = "images/ic_key.png";
-        itemIconColor = colorUtil.getPasswordColor();
+        itemIconColor = ColorUtils.getPasswordColor();
         break;
       case TextType:
         itemIcon = "images/ic_file-text.png";
-        itemIconColor = colorUtil.getTextColor();
+        itemIconColor = ColorUtils.getTextColor();
         break;
       case TOTPType:
         itemIcon = "images/ic_stopwatch.png";
-        itemIconColor = colorUtil.getTotpColor();
-        break;
-      case BlockChainType:
-        itemIcon = "images/ic_bitcoin.png";
-        itemIconColor = colorUtil.getBlockChainColor();
+        itemIconColor = ColorUtils.getTotpColor();
         break;
     }
     return InkWell(
@@ -673,10 +645,8 @@ class ModalAddState extends State<ModalAdd> {
             type: 0,
             text: AppLocalizations.of(context).getLanguageText('addTag'),
             onClickListener: () {
-              pay.checkExpiredTime(context, () {
-                setState(() {
-                  level = 1;
-                });
+              setState(() {
+                level = 1;
               });
             },
           ):Container(),
@@ -684,10 +654,8 @@ class ModalAddState extends State<ModalAdd> {
             type: 5,
             text: AppLocalizations.of(context).getLanguageText('addExistsContent'),
             onClickListener: () {
-              pay.checkExpiredTime(context, () {
-                setState(() {
-                  level = 2;
-                });
+              setState(() {
+                level = 2;
               });
             },
           ),
@@ -699,7 +667,7 @@ class ModalAddState extends State<ModalAdd> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) =>
-                  ContentScreen(
+                  ContentPage(
                     contentType: PasswordType,
                     refreshCallback: () {
                       refreshCallback();
@@ -718,7 +686,7 @@ class ModalAddState extends State<ModalAdd> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) =>
-                  ContentScreen(
+                  ContentPage(
                     contentType: TextType,
                     refreshCallback: () {
                       refreshCallback();
@@ -737,27 +705,8 @@ class ModalAddState extends State<ModalAdd> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) =>
-                  ContentScreen(
+                  ContentPage(
                     contentType: TOTPType,
-                    refreshCallback: () {
-                      refreshCallback();
-                    },
-                    tagName: tagName,
-                  ),
-                ),
-              );
-            },
-          ),
-          ModalAddItem(
-            type: BlockChainType,
-            text: AppLocalizations.of(context).getLanguageText('addDigitalWallet'),
-            onClickListener: () {
-              Navigator.of(context).pop();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>
-                  ContentScreen(
-                    contentType: BlockChainType,
                     refreshCallback: () {
                       refreshCallback();
                     },
@@ -844,10 +793,8 @@ class ModalAddState extends State<ModalAdd> {
                           return;
                         }
                         isSubmit = true;
-                        var account = await user.getAccount();
-                        var version = await user.getVersion();
                         var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-                        List<ContentDetail> contentDetails = List<ContentDetail>();
+                        List<ContentDetail> contentDetails = <ContentDetail>[];
                         for (var contentItem in selectedContentList) {
                           contentDetails.add(ContentDetail(
                             contentItem.content_id,
@@ -863,38 +810,12 @@ class ModalAddState extends State<ModalAdd> {
                         }
                         Navigator.of(context).pop();
                         showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
-                        mypass.updateContents(contentDetails).then((resp) async {
-                          isSubmit = false;
-                          Map<String, dynamic> createResp = json.decode(resp.body);
-                          if (createResp['errno'] != 0) {
-                            var errMsg = AppLocalizations.of(parentContext).getLanguageText('net_error');
-                            switch (createResp['errno']) {
-                              case 4000018:
-                                showExpiryDialog(parentContext);
-                                break;
-                              case 4000000:
-                                applePay();
-                                break;
-                              default:
-                                showErrorToast(errMsg);
-                                break;
-                            }
-                            return;
-                          }
-                          var masterPassword = await user.getMasterPassword();
-                          for (var contentDetail in contentDetails) {
-                            var contentInfo = await convert2ContentInfo(
-                                account, masterPassword, version,
-                                contentDetail);
-                            getDataModel().updateContentInfo(contentInfo);
-                          }
-                          this.refreshCallback();
-                        }).catchError((err) {
-                          isSubmit = false;
-                          showErrorToast(AppLocalizations.of(parentContext).getLanguageText('net_error'));
-                        }).whenComplete(() {
-                          Navigator.of(parentContext).pop();
-                        });
+                        var masterPassword = await StoreUtils.getMasterPassword();
+                        for (var contentDetail in contentDetails) {
+                          var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
+                          getDataModel().updateContentInfo(contentInfo);
+                        }
+                        this.refreshCallback();
                       }
                     },
                   ),
@@ -906,6 +827,7 @@ class ModalAddState extends State<ModalAdd> {
         ]);
         body.add(Container(
           margin: EdgeInsets.all(10.0),
+          height: 36,
           decoration: BoxDecoration(
             color: const Color(0xfff2f4f8),
             borderRadius: BorderRadius.all(
@@ -916,21 +838,41 @@ class ModalAddState extends State<ModalAdd> {
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: CupertinoTextField(
+                child: TextField(
                   controller: keywordCtl,
+                  scrollPadding: EdgeInsets.all(0),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(0),
+                      gapPadding: 0,
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 0,
+                        style: BorderStyle.none
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(0),
+                      gapPadding: 0,
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 0,
+                        style: BorderStyle.none
+                      ),
+                    ),
+                    fillColor: Colors.transparent,
+                    hintText: AppLocalizations.of(context).getLanguageText('keyword_hint'),
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16.0,
+                      textBaseline: TextBaseline.alphabetic,
+                    ),
+                  ),
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontSize: 16.0,
                     textBaseline: TextBaseline.alphabetic,
-                  ),
-                  placeholder: AppLocalizations.of(context).getLanguageText('keyword_hint'),
-                  placeholderStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 15.0,
-                    textBaseline: TextBaseline.alphabetic,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
                   ),
                   onChanged: (_) {
                     setState(() {
@@ -1018,10 +960,8 @@ class ModalAddState extends State<ModalAdd> {
                           return;
                         }
                         isSubmit = true;
-                        var account = await user.getAccount();
-                        var version = await user.getVersion();
                         var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-                        List<ContentDetail> contentDetails = List<ContentDetail>();
+                        List<ContentDetail> contentDetails = <ContentDetail>[];
                         for (var contentItem in selectedContentList) {
                           contentDetails.add(ContentDetail(
                             contentItem.content_id,
@@ -1037,38 +977,12 @@ class ModalAddState extends State<ModalAdd> {
                         }
                         Navigator.of(context).pop();
                         showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
-                        mypass.updateContents(contentDetails).then((resp) async {
-                          isSubmit = false;
-                          Map<String, dynamic> createResp = json.decode(resp.body);
-                          if (createResp['errno'] != 0) {
-                            var errMsg = AppLocalizations.of(parentContext).getLanguageText('net_error');
-                            switch (createResp['errno']) {
-                              case 4000018:
-                                showExpiryDialog(parentContext);
-                                break;
-                              case 4000000:
-                                applePay();
-                                break;
-                              default:
-                                showErrorToast(errMsg);
-                                break;
-                            }
-                            return;
-                          }
-                          var masterPassword = await user.getMasterPassword();
-                          for (var contentDetail in contentDetails) {
-                            var contentInfo = await convert2ContentInfo(
-                                account, masterPassword, version,
-                                contentDetail);
-                            getDataModel().updateContentInfo(contentInfo);
-                          }
-                          this.refreshCallback();
-                        }).catchError((err) {
-                          isSubmit = false;
-                          showErrorToast(AppLocalizations.of(parentContext).getLanguageText('net_error'));
-                        }).whenComplete(() {
-                          Navigator.of(parentContext).pop();
-                        });
+                        var masterPassword = await StoreUtils.getMasterPassword();
+                        for (var contentDetail in contentDetails) {
+                          var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
+                          getDataModel().updateContentInfo(contentInfo);
+                        }
+                        this.refreshCallback();
                       }
                     },
                   ),
@@ -1090,21 +1004,41 @@ class ModalAddState extends State<ModalAdd> {
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: CupertinoTextField(
+                child: TextField(
                   controller: keywordCtl,
+                  scrollPadding: EdgeInsets.all(0),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(0),
+                      gapPadding: 0,
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 0,
+                        style: BorderStyle.none
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(0),
+                      gapPadding: 0,
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 0,
+                        style: BorderStyle.none
+                      ),
+                    ),
+                    fillColor: Colors.transparent,
+                    hintText: AppLocalizations.of(context).getLanguageText('keyword_hint'),
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16.0,
+                      textBaseline: TextBaseline.alphabetic,
+                    ),
+                  ),
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontSize: 16.0,
                     textBaseline: TextBaseline.alphabetic,
-                  ),
-                  placeholder: AppLocalizations.of(context).getLanguageText('keyword_hint'),
-                  placeholderStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 15.0,
-                    textBaseline: TextBaseline.alphabetic,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
                   ),
                   onChanged: (_) {
                     setState(() {
@@ -1157,27 +1091,23 @@ class ModalAddItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var itemIcon = "images/ic_tag.png";
-    var itemIconColor = colorUtil.getTagColor();
+    var itemIconColor = ColorUtils.getTagColor();
     switch (this.type) {
       case PasswordType:
         itemIcon = "images/ic_key.png";
-        itemIconColor = colorUtil.getPasswordColor();
+        itemIconColor = ColorUtils.getPasswordColor();
         break;
       case TextType:
         itemIcon = "images/ic_file-text.png";
-        itemIconColor = colorUtil.getTextColor();
+        itemIconColor = ColorUtils.getTextColor();
         break;
       case TOTPType:
         itemIcon = "images/ic_stopwatch.png";
-        itemIconColor = colorUtil.getTotpColor();
-        break;
-      case BlockChainType:
-        itemIcon = "images/ic_bitcoin.png";
-        itemIconColor = colorUtil.getBlockChainColor();
+        itemIconColor = ColorUtils.getTotpColor();
         break;
       case 5:
         itemIcon = "images/ic_all.png";
-        itemIconColor = colorUtil.getTagColor();
+        itemIconColor = ColorUtils.getTagColor();
         break;
     }
     return MaterialButton(
@@ -1230,23 +1160,19 @@ class ModalAddContentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var itemIcon = "images/ic_tag.png";
-    var itemIconColor = colorUtil.getTagColor();
+    var itemIconColor = ColorUtils.getTagColor();
     switch (this.type) {
       case PasswordType:
         itemIcon = "images/ic_key.png";
-        itemIconColor = colorUtil.getPasswordColor();
+        itemIconColor = ColorUtils.getPasswordColor();
         break;
       case TextType:
         itemIcon = "images/ic_file-text.png";
-        itemIconColor = colorUtil.getTextColor();
+        itemIconColor = ColorUtils.getTextColor();
         break;
       case TOTPType:
         itemIcon = "images/ic_stopwatch.png";
-        itemIconColor = colorUtil.getTotpColor();
-        break;
-      case BlockChainType:
-        itemIcon = "images/ic_bitcoin.png";
-        itemIconColor = colorUtil.getBlockChainColor();
+        itemIconColor = ColorUtils.getTotpColor();
         break;
     }
     return MaterialButton(

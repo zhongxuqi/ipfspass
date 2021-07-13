@@ -3,6 +3,7 @@ import 'package:app/utils/store.dart';
 import 'package:flutter/material.dart';
 import 'components/AlertDialog.dart';
 import 'components/DrawerButton.dart';
+import 'components/FragmentContent.dart';
 import 'db/data.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -58,9 +59,31 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<FragmentContentState> _fragmentContentKey = new GlobalKey<FragmentContentState>();
+
   var keywordCtl = TextEditingController();
   var focusNode = FocusNode();
   int _currentPageIndex = 0;
+
+  FragmentContent fragmentContent;
+  var fragments = <Widget>[];
+
+  @override
+  void initState() {
+    super.initState();
+
+    fragmentContent = FragmentContent(
+      key: _fragmentContentKey,
+      clearKeyWord: () {
+        keywordCtl.text = "";
+        if (_currentPageIndex == 0) {
+          _fragmentContentKey.currentState.setKeyword('');
+        }
+      },
+    );
+
+    fragments.add(fragmentContent);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,6 +215,10 @@ class _MainPageState extends State<MainPage> {
                   ],
                 )
               ),
+            ),
+            Expanded(
+              flex: 1,
+              child: fragments[_currentPageIndex],
             ),
           ],
         ),

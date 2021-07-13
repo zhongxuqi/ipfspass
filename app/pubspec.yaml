@@ -33,6 +33,10 @@ dependencies:
   local_auth: ^1.1.6
   fluttertoast: ^8.0.7
   lpinyin: ^2.0.3
+  permission_handler: ^8.1.2
+  uuid: ^3.0.4
+  otp: ^3.0.0
+  flutter_qr_reader: 1.0.3
 
 dev_dependencies:
   flutter_test:

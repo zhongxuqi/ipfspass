@@ -16,4 +16,9 @@ class IconFonts {
   static const IconData update = IconData(0xe641, fontFamily: 'iconfont');
   static const IconData setting = IconData(0xe66f, fontFamily: 'iconfont');
   static const IconData chat = IconData(0xe6e3, fontFamily: 'iconfont');
+  static const IconData circle = IconData(0xe648, fontFamily: 'iconfont');
+  static const IconData check_box_outline = IconData(0xe63e, fontFamily: 'iconfont');
+  static const IconData check_box_outline_bl = IconData(0xec58, fontFamily: 'iconfont');
+  static const IconData camera = IconData(0xe603, fontFamily: 'iconfont');
+  static const IconData add = IconData(0xe6fa, fontFamily: 'iconfont');
 }

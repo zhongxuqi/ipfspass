@@ -11,4 +11,20 @@ class ColorUtils {
   static const Color orange = const Color(0xfff57f16);
   static const Color grey = const Color(0xffa4a5a5);
   static const Color transparent = Colors.transparent;
+
+  static Color getPasswordColor() {
+    return const Color(0xFF304FFE);
+  }
+
+  static Color getTextColor() {
+    return const Color(0xFF43A047);
+  }
+
+  static Color getTotpColor() {
+    return const Color(0xFFF9A825);
+  }
+
+  static Color getTagColor() {
+    return const Color(0xFF212121);
+  }
 }

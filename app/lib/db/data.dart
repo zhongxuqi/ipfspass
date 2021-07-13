@@ -97,7 +97,7 @@ class DataModal {
     });
   }
 
-  Future<List<ContentInfo>> listContentInfo(String account, int version) async {
+  Future<List<ContentInfo>> listContentInfo() async {
     List<Map> list = await this.database.rawQuery('SELECT * FROM ContentInfo ORDER BY id DESC');
     List<ContentInfo> contentList = <ContentInfo>[];
     for (var item in list) {

@@ -100,6 +100,154 @@ class AppLocalizations {
       "en": "Feedback",
       "zh": "反馈",
     },
+    "affirm_delete_content": {
+      "en": 'Deleted data can\'t be recovery, are you sure?',
+      "zh": '删除的数据无法恢复，您是否确定?',
+    },
+    "all_password": {
+      "en": 'All Password',
+      "zh": '所有密码',
+    },
+    "all_text": {
+      "en": 'All Text',
+      "zh": '所有文本',
+    },
+    "all_totp": {
+      "en": 'All Google Auth',
+      "zh": '所有Google认证',
+    },
+    "rename_tag": {
+      "en": 'Rename tag',
+      "zh": '重命名标签',
+    },
+    "processing": {
+      "en": 'Processing...',
+      "zh": '处理中...',
+    },
+    "tag_name": {
+      "en": 'Tag Name',
+      "zh": '标签名',
+    },
+    "tag_name_input_hint": {
+      "en": 'Please input tag name...',
+      "zh": '请输入标签名...',
+    },
+    "delete_tag": {
+      "en": 'Delete Tag',
+      "zh": '删除标签',
+    },
+    "remove_from_tag": {
+      "en": 'Remove from tag',
+      "zh": '从标签中移除',
+    },
+    "delete": {
+      "en": 'Delete',
+      "zh": '删除',
+    },
+    "add_tag": {
+      "en": 'Add New Tag',
+      "zh": '添加新标签',
+    },
+    "add_exists_content": {
+      "en": 'Add exists content',
+      "zh": '添加现有内容',
+    },
+    "add_password": {
+      "en": 'Add New Password',
+      "zh": '添加新密码',
+    },
+    "add_text": {
+      "en": 'Add New Text',
+      "zh": '添加新文本',
+    },
+    "add_totp": {
+      "en": 'Add New Totp',
+      "zh": '添加新谷歌认证',
+    },
+    "tag_name_exists": {
+      "en": 'Tag exists',
+      "zh": '已存在',
+    },
+    "content_required": {
+      "en": 'require one content at least',
+      "zh": '请至少选择一个内容',
+    },
+    "title": {
+      "en": 'Title',
+      "zh": '标题',
+    },
+    "input_title_hint": {
+      "en": 'Please input title',
+      "zh": '请输入标题',
+    },
+    "account": {
+      "en": 'Account',
+      "zh": '账户',
+    },
+    "input_account_hint": {
+      "en": 'Please input account',
+      "zh": '请输入帐号',
+    },
+    "password": {
+      "en": 'Password',
+      "zh": '密码',
+    },
+    "input_password_hint": {
+      "en": 'Please input password',
+      "zh": '请输入密码',
+    },
+    "text": {
+      "en": 'Text',
+      "zh": '文本',
+    },
+    "input_text_hint": {
+      "en": 'Please input text',
+      "zh": '请输入文本',
+    },
+    "totp_key": {
+      "en": 'Google Auth Key',
+      "zh": '谷歌验证Key',
+    },
+    "input_totp_hint": {
+      "en": 'Please input Google Auth',
+      "zh": '请输入谷歌验证Key',
+    },
+    "input_hint": {
+      "en": 'Please Input...',
+      "zh": '请输入...',
+    },
+    "add_key": {
+      "en": 'Add Key',
+      "zh": '添加字段',
+    },
+    "key_exists": {
+      "en": 'Key exists',
+      "zh": '字段名已存在',
+    },
+    "key_name": {
+      "en": 'Key Name',
+      "zh": '字段名',
+    },
+    "key_name_hint": {
+      "en": 'Please input key name',
+      "zh": '请输入字段名',
+    },
+    "submit": {
+      "en": 'Submit',
+      "zh": '提交',
+    },
+    "edit": {
+      "en": 'Edit',
+      "zh": '编辑',
+    },
+    "copied": {
+      "en": 'Copied',
+      "zh": '复制成功',
+    },
+    "generate": {
+      "en": 'Generate',
+      "zh": '生成',
+    },
   };
 
   String getLanguageText(String textID) {

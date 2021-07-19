@@ -199,10 +199,10 @@ class FragmentContentState extends State<FragmentContent> {
             SliverList(
               delegate: new SliverChildListDelegate(
                 <Widget>[
-                  _keyword==''||AppLocalizations.of(context).getLanguageText('allPassword').toLowerCase().contains(_keyword.toLowerCase())?TagCard(
+                  _keyword==''||AppLocalizations.of(context).getLanguageText('all_password').toLowerCase().contains(_keyword.toLowerCase())?TagCard(
                     tagIcon: 'images/ic_key.png',
                     tagIconColor: ColorUtils.getPasswordColor(),
-                    tagName: AppLocalizations.of(context).getLanguageText('allPassword'),
+                    tagName: AppLocalizations.of(context).getLanguageText('all_password'),
                     onClickListener: () async {
                       tagName = '';
                       contentType = PasswordType;
@@ -212,10 +212,10 @@ class FragmentContentState extends State<FragmentContent> {
                       clearKeyWord();
                     },
                   ):Container(),
-                  _keyword==''||AppLocalizations.of(context).getLanguageText('allText').toLowerCase().contains(_keyword.toLowerCase())?TagCard(
+                  _keyword==''||AppLocalizations.of(context).getLanguageText('all_text').toLowerCase().contains(_keyword.toLowerCase())?TagCard(
                     tagIcon: 'images/ic_file-text.png',
                     tagIconColor: ColorUtils.getTextColor(),
-                    tagName: AppLocalizations.of(context).getLanguageText('allText'),
+                    tagName: AppLocalizations.of(context).getLanguageText('all_text'),
                     onClickListener: () async {
                       tagName = '';
                       contentType = TextType;
@@ -225,10 +225,10 @@ class FragmentContentState extends State<FragmentContent> {
                       clearKeyWord();
                     },
                   ):Container(),
-                  _keyword==''||AppLocalizations.of(context).getLanguageText('allTotp').toLowerCase().contains(_keyword.toLowerCase())?TagCard(
+                  _keyword==''||AppLocalizations.of(context).getLanguageText('all_totp').toLowerCase().contains(_keyword.toLowerCase())?TagCard(
                     tagIcon: 'images/ic_stopwatch.png',
                     tagIconColor: ColorUtils.getTotpColor(),
-                    tagName: AppLocalizations.of(context).getLanguageText('allTotp'),
+                    tagName: AppLocalizations.of(context).getLanguageText('all_totp'),
                     onClickListener: () async {
                       tagName = '';
                       contentType = TOTPType;
@@ -266,7 +266,7 @@ class FragmentContentState extends State<FragmentContent> {
                               ActionItem(
                                 icon: 'images/ic_edit.png',
                                 color: Colors.blue,
-                                text: AppLocalizations.of(context).getLanguageText('renameTag'),
+                                text: AppLocalizations.of(context).getLanguageText('rename_tag'),
                                 onClickListener: () async {
                                   showAddKeyDialog(context,
                                     callback: (newTagName) async {
@@ -298,8 +298,8 @@ class FragmentContentState extends State<FragmentContent> {
                                       }
                                       initContentList();
                                     },
-                                    keyName: AppLocalizations.of(context).getLanguageText('tagName'),
-                                    keyNameHint: AppLocalizations.of(context).getLanguageText('tagNameInputHint'),
+                                    keyName: AppLocalizations.of(context).getLanguageText('tag_name'),
+                                    keyNameHint: AppLocalizations.of(context).getLanguageText('tag_name_input_hint'),
                                     initValue: tagName,
                                   );
                                 },
@@ -307,7 +307,7 @@ class FragmentContentState extends State<FragmentContent> {
                               ActionItem(
                                 icon: 'images/ic_close.png',
                                 color: Colors.orange,
-                                text: AppLocalizations.of(context).getLanguageText('deleteTag'),
+                                text: AppLocalizations.of(context).getLanguageText('delete_tag'),
                                 onClickListener: () async {
                                   var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
                                   List<ContentDetail> contentDetails = <ContentDetail>[];
@@ -384,7 +384,7 @@ class FragmentContentState extends State<FragmentContent> {
                               tagName!=null&&tagName!=""?ActionItem(
                                 icon: 'images/ic_close.png',
                                 color: Colors.orange,
-                                text: AppLocalizations.of(context).getLanguageText('removeFromTag'),
+                                text: AppLocalizations.of(context).getLanguageText('remove_from_tag'),
                                 onClickListener: () async {
                                   var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
                                   List<ContentDetail> contentDetails = List<ContentDetail>();
@@ -643,7 +643,7 @@ class ModalAddState extends State<ModalAdd> {
         body.addAll(<Widget>[
           (tagName==null||tagName=="")&&contentList.length>0?ModalAddItem(
             type: 0,
-            text: AppLocalizations.of(context).getLanguageText('addTag'),
+            text: AppLocalizations.of(context).getLanguageText('add_tag'),
             onClickListener: () {
               setState(() {
                 level = 1;
@@ -652,7 +652,7 @@ class ModalAddState extends State<ModalAdd> {
           ):Container(),
           tagName==null||tagName==""?Container():ModalAddItem(
             type: 5,
-            text: AppLocalizations.of(context).getLanguageText('addExistsContent'),
+            text: AppLocalizations.of(context).getLanguageText('add_exists_content'),
             onClickListener: () {
               setState(() {
                 level = 2;
@@ -661,7 +661,7 @@ class ModalAddState extends State<ModalAdd> {
           ),
           ModalAddItem(
             type: PasswordType,
-            text: AppLocalizations.of(context).getLanguageText('addPassword'),
+            text: AppLocalizations.of(context).getLanguageText('add_password'),
             onClickListener: () {
               Navigator.of(context).pop();
               Navigator.push(
@@ -680,7 +680,7 @@ class ModalAddState extends State<ModalAdd> {
           ),
           ModalAddItem(
             type: TextType,
-            text: AppLocalizations.of(context).getLanguageText('addText'),
+            text: AppLocalizations.of(context).getLanguageText('add_text'),
             onClickListener: () {
               Navigator.of(context).pop();
               Navigator.push(
@@ -699,7 +699,7 @@ class ModalAddState extends State<ModalAdd> {
           ),
           ModalAddItem(
             type: TOTPType,
-            text: AppLocalizations.of(context).getLanguageText('addTotp'),
+            text: AppLocalizations.of(context).getLanguageText('add_totp'),
             onClickListener: () {
               Navigator.of(context).pop();
               Navigator.push(
@@ -722,9 +722,9 @@ class ModalAddState extends State<ModalAdd> {
         body.addAll(<Widget>[
           Container(
             child: FormInput(
-              keyName: AppLocalizations.of(context).getLanguageText('tagName'),
+              keyName: AppLocalizations.of(context).getLanguageText('tag_name'),
               valueCtl: tagNameCtl,
-              hintText: AppLocalizations.of(context).getLanguageText('tagNameInputHint'),
+              hintText: AppLocalizations.of(context).getLanguageText('tag_name_input_hint'),
               onchange: (newText) {
                 setState(() {
                   tagNameErr = '';
@@ -784,10 +784,10 @@ class ModalAddState extends State<ModalAdd> {
                         });
                       } else if (tags.where((tagItem) => tagItem == tagNameCtl.text).length > 0) {
                         setState(() {
-                          tagNameErr = AppLocalizations.of(context).getLanguageText('tagNameExists');
+                          tagNameErr = AppLocalizations.of(context).getLanguageText('tag_name_exists');
                         });
                       } else if (selectedContentList.length <= 0) {
-                        showErrorToast(AppLocalizations.of(context).getLanguageText('contentRequired'));
+                        showErrorToast(AppLocalizations.of(context).getLanguageText('content_required'));
                       } else {
                         if (isSubmit) {
                           return;
@@ -954,7 +954,7 @@ class ModalAddState extends State<ModalAdd> {
                     ),
                     onTap: () async {
                       if (selectedContentList.length <= 0) {
-                        showErrorToast(AppLocalizations.of(context).getLanguageText('contentRequired'));
+                        showErrorToast(AppLocalizations.of(context).getLanguageText('content_required'));
                       } else {
                         if (isSubmit) {
                           return;

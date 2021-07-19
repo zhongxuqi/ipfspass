@@ -305,7 +305,7 @@ class ContentPageState extends State<ContentPage> {
       key: _titleScaffoldKey,
       keyName: AppLocalizations.of(context).getLanguageText('title'),
       value: title,
-      hintText: AppLocalizations.of(context).getLanguageText('inputTitleHint'),
+      hintText: AppLocalizations.of(context).getLanguageText('input_title_hint'),
       editable: editable,
       onChange: (value) {
         title = value;
@@ -319,7 +319,7 @@ class ContentPageState extends State<ContentPage> {
           keyName: AppLocalizations.of(context).getLanguageText('account'),
           value: account,
           obscureText: true,
-          hintText: AppLocalizations.of(context).getLanguageText('inputAccountHint'),
+          hintText: AppLocalizations.of(context).getLanguageText('input_account_hint'),
           editable: editable,
           onChange: (value) {
             account = value;
@@ -330,7 +330,7 @@ class ContentPageState extends State<ContentPage> {
           keyName: AppLocalizations.of(context).getLanguageText('password'),
           value: password,
           obscureText: true,
-          hintText: AppLocalizations.of(context).getLanguageText('inputPasswordHint'),
+          hintText: AppLocalizations.of(context).getLanguageText('input_password_hint'),
           editable: editable,
           onChange: (value) {
             password = value;
@@ -344,7 +344,7 @@ class ContentPageState extends State<ContentPage> {
           keyName: AppLocalizations.of(context).getLanguageText('text'),
           value: text,
           maxLines: null,
-          hintText: AppLocalizations.of(context).getLanguageText('inputTextHint'),
+          hintText: AppLocalizations.of(context).getLanguageText('input_text_hint'),
           editable: editable,
           onChange: (value) {
             text = value;
@@ -358,7 +358,7 @@ class ContentPageState extends State<ContentPage> {
           keyName: AppLocalizations.of(context).getLanguageText('totp_key'),
           value: totp,
           obscureText: true,
-          hintText: AppLocalizations.of(context).getLanguageText('inputTOTPHint'),
+          hintText: AppLocalizations.of(context).getLanguageText('input_totp_hint'),
           editable: editable,
           onChange: (value) {
             totp = value;
@@ -372,7 +372,7 @@ class ContentPageState extends State<ContentPage> {
         key: _extraScaffoldKeyMap[key],
         keyName: key,
         value: extra[key],
-        hintText: AppLocalizations.of(context).getLanguageText('inputHint'),
+        hintText: AppLocalizations.of(context).getLanguageText('input_hint'),
         editable: editable,
         onChange: (value) {
           extra[key] = value;
@@ -402,7 +402,7 @@ class ContentPageState extends State<ContentPage> {
               borderRadius: BorderRadius.circular(5.0),
             ),
             child: Text(
-              AppLocalizations.of(context).getLanguageText('addKey'),
+              AppLocalizations.of(context).getLanguageText('add_key'),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15.0,
@@ -413,7 +413,7 @@ class ContentPageState extends State<ContentPage> {
             showAddKeyDialog(context,
               callback: (keyName) {
                 if (extra.containsKey(keyName)) {
-                  showErrorToast(AppLocalizations.of(context).getLanguageText('keyExists'));
+                  showErrorToast(AppLocalizations.of(context).getLanguageText('key_exists'));
                 } else {
                   Navigator.of(context).pop();
                   setState(() {
@@ -422,8 +422,8 @@ class ContentPageState extends State<ContentPage> {
                   });
                 }
               },
-              keyName: AppLocalizations.of(context).getLanguageText('keyName'),
-              keyNameHint: AppLocalizations.of(context).getLanguageText('keyNameHint'),
+              keyName: AppLocalizations.of(context).getLanguageText('key_name'),
+              keyNameHint: AppLocalizations.of(context).getLanguageText('key_name_hint'),
               initValue: '',
             );
           },

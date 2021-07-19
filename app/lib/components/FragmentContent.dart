@@ -202,6 +202,7 @@ class FragmentContentState extends State<FragmentContent> {
                   _keyword==''||AppLocalizations.of(context).getLanguageText('all_password').toLowerCase().contains(_keyword.toLowerCase())?TagCard(
                     tagIcon: 'images/ic_key.png',
                     tagIconColor: ColorUtils.getPasswordColor(),
+                    tagIconBgColor: ColorUtils.getPasswordBgColor(),
                     tagName: AppLocalizations.of(context).getLanguageText('all_password'),
                     onClickListener: () async {
                       tagName = '';
@@ -215,6 +216,7 @@ class FragmentContentState extends State<FragmentContent> {
                   _keyword==''||AppLocalizations.of(context).getLanguageText('all_text').toLowerCase().contains(_keyword.toLowerCase())?TagCard(
                     tagIcon: 'images/ic_file-text.png',
                     tagIconColor: ColorUtils.getTextColor(),
+                    tagIconBgColor: ColorUtils.getTextBgColor(),
                     tagName: AppLocalizations.of(context).getLanguageText('all_text'),
                     onClickListener: () async {
                       tagName = '';
@@ -228,6 +230,7 @@ class FragmentContentState extends State<FragmentContent> {
                   _keyword==''||AppLocalizations.of(context).getLanguageText('all_totp').toLowerCase().contains(_keyword.toLowerCase())?TagCard(
                     tagIcon: 'images/ic_stopwatch.png',
                     tagIconColor: ColorUtils.getTotpColor(),
+                    tagIconBgColor: ColorUtils.getTotpBgColor(),
                     tagName: AppLocalizations.of(context).getLanguageText('all_totp'),
                     onClickListener: () async {
                       tagName = '';

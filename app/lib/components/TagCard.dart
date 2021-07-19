@@ -4,11 +4,12 @@ import '../utils/colors.dart';
 class TagCard extends StatelessWidget {
   final String tagIcon;
   final Color tagIconColor;
+  final Color tagIconBgColor;
   final String tagName;
   final VoidCallback onClickListener;
   final VoidCallback onLongPressListener;
 
-  TagCard({Key key, this.tagIcon, this.tagIconColor, @required this.tagName, @required this.onClickListener,
+  TagCard({Key key, this.tagIcon, this.tagIconColor, this.tagIconBgColor, @required this.tagName, @required this.onClickListener,
     this.onLongPressListener}): super(key: key);
 
   @override
@@ -26,8 +27,9 @@ class TagCard extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 7.0,vertical: 0.0),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: tagIconColor==null?ColorUtils.getTagColor():tagIconColor,
-                  borderRadius: BorderRadius.all(Radius.circular(999.0))
+                border: Border.all(color: tagIconColor),
+                color: tagIconBgColor==null?ColorUtils.getTagBgColor():tagIconBgColor,
+                borderRadius: BorderRadius.all(Radius.circular(999.0))
               ),
               child: Image.asset(tagIcon==null?'images/ic_tag.png':tagIcon, width: 16.0, height: 16.0),
             ),
@@ -36,13 +38,13 @@ class TagCard extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(left: 5.0, top: 13.0, bottom: 13.0),
                 decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Colors.grey[200]))
+                  border: Border(bottom: BorderSide(color: ColorUtils.divider))
                 ),
                 child: Text(
                   tagName,
                   style: TextStyle(
                     fontSize: 14.0,
-                    color: const Color(0xff434343),
+                    color: ColorUtils.textColor,
                   ),
                 ),
               ),

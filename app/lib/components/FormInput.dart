@@ -1,3 +1,4 @@
+import 'package:app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -24,6 +25,7 @@ class FormInput extends StatelessWidget {
             style: TextStyle(
               fontSize: 15.0,
               fontWeight: FontWeight.bold,
+              color: ColorUtils.textColor,
             ),
           ),
         ),
@@ -31,7 +33,7 @@ class FormInput extends StatelessWidget {
           height: 36,
           margin: EdgeInsets.symmetric(horizontal: 10.0),
           decoration: BoxDecoration(
-            color: const Color(0xfff2f4f8),
+            color: ColorUtils.themeLightColor,
             borderRadius: BorderRadius.all(
               Radius.circular(5.0),
             ),
@@ -72,7 +74,7 @@ class FormInput extends StatelessWidget {
                     ),
                   ),
                   style: TextStyle(
-                    color: Colors.white,
+                    color: ColorUtils.textColor,
                     fontSize: 16.0,
                     textBaseline: TextBaseline.alphabetic,
                   ),

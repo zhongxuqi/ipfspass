@@ -639,7 +639,7 @@ class ModalAddState extends State<ModalAdd> {
   List<ContentDetail> contentList;
   int level = 0;
   String tagNameErr = '';
-  List<ContentDetail> selectedContentList = List<ContentDetail>();
+  List<ContentDetail> selectedContentList = <ContentDetail>[];
 
   ModalAddState({@required this.hasTag, @required this.refreshCallback, @required this.contentList, @required this.tags,
     @required this.tagName, @required this.parentContext});
@@ -759,13 +759,13 @@ class ModalAddState extends State<ModalAdd> {
                       padding: EdgeInsets.all(5.0),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Colors.grey[300],
+                        color: ColorUtils.themeLightColor,
                         borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       ),
                       child: Text(
                         AppLocalizations.of(context).getLanguageText('cancel'),
                         style: TextStyle(
-                          color: Colors.black,
+                          color: ColorUtils.textColor,
                         ),
                       ),
                     ),
@@ -781,7 +781,7 @@ class ModalAddState extends State<ModalAdd> {
                       padding: EdgeInsets.all(5.0),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: ColorUtils.blue,
                         borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       ),
                       child: Text(
@@ -837,13 +837,13 @@ class ModalAddState extends State<ModalAdd> {
               ],
             ),
           ),
-          Divider(color: Colors.grey[200]),
+          Divider(color: ColorUtils.divider),
         ]);
         body.add(Container(
           margin: EdgeInsets.all(10.0),
           height: 36,
           decoration: BoxDecoration(
-            color: const Color(0xfff2f4f8),
+            color: ColorUtils.themeLightColor,
             borderRadius: BorderRadius.all(
               Radius.circular(5.0),
             ),
@@ -990,7 +990,6 @@ class ModalAddState extends State<ModalAdd> {
                           ));
                         }
                         Navigator.of(context).pop();
-                        showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
                         var masterPassword = await StoreUtils.getMasterPassword();
                         for (var contentDetail in contentDetails) {
                           var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
@@ -1179,18 +1178,27 @@ class ModalAddContentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var itemIcon = "images/ic_tag.png";
     var itemIconColor = ColorUtils.getTagColor();
+    var itemIconBgColor = ColorUtils.getTagBgColor();
     switch (this.type) {
       case PasswordType:
         itemIcon = "images/ic_key.png";
         itemIconColor = ColorUtils.getPasswordColor();
+        itemIconBgColor = ColorUtils.getPasswordBgColor();
         break;
       case TextType:
         itemIcon = "images/ic_file-text.png";
         itemIconColor = ColorUtils.getTextColor();
+        itemIconBgColor = ColorUtils.getTextBgColor();
         break;
       case TOTPType:
         itemIcon = "images/ic_stopwatch.png";
         itemIconColor = ColorUtils.getTotpColor();
+        itemIconBgColor = ColorUtils.getTotpBgColor();
+        break;
+      case 5:
+        itemIcon = "images/ic_all.png";
+        itemIconColor = ColorUtils.getTagColor();
+        itemIconBgColor = ColorUtils.getTagBgColor();
         break;
     }
     return MaterialButton(
@@ -1204,7 +1212,7 @@ class ModalAddContentItem extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 7.0,vertical: 0.0),
             child: Icon(
               selected?IconFonts.check_box_outline:IconFonts.check_box_outline_bl,
-              color: Colors.black54,
+              color: ColorUtils.textColor,
               size: 20.0,
             ),
           ),
@@ -1213,8 +1221,9 @@ class ModalAddContentItem extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 7.0,vertical: 0.0),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: itemIconColor,
-                borderRadius: BorderRadius.all(Radius.circular(999.0))
+              color: itemIconBgColor,
+              borderRadius: BorderRadius.all(Radius.circular(999.0)),
+              border: Border.all(color: itemIconColor),
             ),
             child: Image.asset(itemIcon, width: 16.0, height: 16.0),
           ),
@@ -1223,13 +1232,13 @@ class ModalAddContentItem extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.only(left: 5.0, top: 16.0, bottom: 15.0),
               decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey[200])),
+                border: Border(bottom: BorderSide(color: ColorUtils.divider)),
               ),
               child: Text(
                 text,
                 style: TextStyle(
                   fontSize: 14.0,
-                  color: const Color(0xff434343),
+                  color: ColorUtils.textColor
                 ),
               ),
             ),

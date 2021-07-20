@@ -43,10 +43,10 @@ class ColorUtils {
   }
 
   static Color getTagColor() {
-    return const Color(0xFF212121);
+    return const Color(0xFFFFFFFF);
   }
 
   static Color getTagBgColor() {
-    return const Color(0xFF212121);
+    return const Color(0x44FFFFFF);
   }
 }

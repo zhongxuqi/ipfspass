@@ -477,12 +477,13 @@ class FragmentContentState extends State<FragmentContent> {
                     padding: EdgeInsets.all(15.0),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: const Color(0xFF24292E),
+                      color: ColorUtils.getTagBgColor(),
+                      border: Border.all(color: ColorUtils.getTagColor()),
                     ),
                     child: Icon(
                       IconFonts.add,
-                      color: Colors.white,
-                      size: 20.0,
+                      color: ColorUtils.white,
+                      size: 25.0,
                     ),
                   ),
                   onTap: () {
@@ -538,18 +539,27 @@ class ContentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var itemIcon = "images/ic_tag.png";
     var itemIconColor = ColorUtils.getTagColor();
+    var itemIconBgColor = ColorUtils.getTagBgColor();
     switch (contentDetail.type) {
       case PasswordType:
         itemIcon = "images/ic_key.png";
         itemIconColor = ColorUtils.getPasswordColor();
+        itemIconBgColor = ColorUtils.getPasswordBgColor();
         break;
       case TextType:
         itemIcon = "images/ic_file-text.png";
         itemIconColor = ColorUtils.getTextColor();
+        itemIconBgColor = ColorUtils.getTextBgColor();
         break;
       case TOTPType:
         itemIcon = "images/ic_stopwatch.png";
         itemIconColor = ColorUtils.getTotpColor();
+        itemIconBgColor = ColorUtils.getTotpBgColor();
+        break;
+      case 5:
+        itemIcon = "images/ic_all.png";
+        itemIconColor = ColorUtils.getTagColor();
+        itemIconBgColor = ColorUtils.getTagBgColor();
         break;
     }
     return InkWell(
@@ -565,8 +575,9 @@ class ContentItem extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 7.0,vertical: 0.0),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: itemIconColor,
-                  borderRadius: BorderRadius.all(Radius.circular(999.0))
+                border: Border.all(color: itemIconColor),
+                color: itemIconBgColor,
+                borderRadius: BorderRadius.all(Radius.circular(999.0))
               ),
               child: Image.asset(itemIcon, width: 16.0, height: 16.0),
             ),
@@ -575,13 +586,13 @@ class ContentItem extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(left: 5.0, top: 13.0, bottom: 13.0),
                 decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[200])),
+                  border: Border(bottom: BorderSide(color: ColorUtils.divider)),
                 ),
                 child: Text(
                   contentDetail.title,
                   style: TextStyle(
                     fontSize: 14.0,
-                    color: const Color(0xff434343),
+                    color: ColorUtils.textColor,
                   ),
                 ),
               ),
@@ -1079,6 +1090,7 @@ class ModalAddState extends State<ModalAdd> {
     }
     return SimpleDialog(
       contentPadding: EdgeInsets.only(),
+      backgroundColor: ColorUtils.themeColor,
       children: body,
     );
   }
@@ -1095,22 +1107,27 @@ class ModalAddItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var itemIcon = "images/ic_tag.png";
     var itemIconColor = ColorUtils.getTagColor();
+    var itemIconBgColor = ColorUtils.getTagBgColor();
     switch (this.type) {
       case PasswordType:
         itemIcon = "images/ic_key.png";
         itemIconColor = ColorUtils.getPasswordColor();
+        itemIconBgColor = ColorUtils.getPasswordBgColor();
         break;
       case TextType:
         itemIcon = "images/ic_file-text.png";
         itemIconColor = ColorUtils.getTextColor();
+        itemIconBgColor = ColorUtils.getTextBgColor();
         break;
       case TOTPType:
         itemIcon = "images/ic_stopwatch.png";
         itemIconColor = ColorUtils.getTotpColor();
+        itemIconBgColor = ColorUtils.getTotpBgColor();
         break;
       case 5:
         itemIcon = "images/ic_all.png";
         itemIconColor = ColorUtils.getTagColor();
+        itemIconBgColor = ColorUtils.getTagBgColor();
         break;
     }
     return MaterialButton(
@@ -1124,8 +1141,9 @@ class ModalAddItem extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 7.0,vertical: 0.0),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: itemIconColor,
-                borderRadius: BorderRadius.all(Radius.circular(999.0))
+              border: Border.all(color: itemIconColor),
+              color: itemIconBgColor,
+              borderRadius: BorderRadius.all(Radius.circular(999.0))
             ),
             child: Image.asset(itemIcon, width: 16.0, height: 16.0),
           ),
@@ -1133,14 +1151,11 @@ class ModalAddItem extends StatelessWidget {
             flex: 1,
             child: Container(
               padding: EdgeInsets.only(left: 5.0, top: 16.0, bottom: 15.0),
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey[200])),
-              ),
               child: Text(
                 text,
                 style: TextStyle(
                   fontSize: 14.0,
-                  color: const Color(0xff434343),
+                  color: ColorUtils.textColor,
                 ),
               ),
             ),

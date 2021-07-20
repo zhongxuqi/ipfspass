@@ -204,6 +204,10 @@ class AppLocalizations {
       "en": 'Please input text',
       "zh": '请输入文本',
     },
+    "totp": {
+      "en": 'Google Auth',
+      "zh": '谷歌验证',
+    },
     "totp_key": {
       "en": 'Google Auth Key',
       "zh": '谷歌验证Key',

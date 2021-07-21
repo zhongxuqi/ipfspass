@@ -458,12 +458,13 @@ class FragmentContentState extends State<FragmentContent> {
                     padding: EdgeInsets.all(15.0),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: const Color(0xFF24292E),
+                      color: ColorUtils.getTagBgColor(),
+                      border: Border.all(color: ColorUtils.getTagColor()),
                     ),
                     child: Icon(
                       IconFonts.arrowLeft,
-                      color: Colors.white,
-                      size: 20.0,
+                      color: ColorUtils.white,
+                      size: 25.0,
                     ),
                   ),
                   onTap: goBack,

@@ -343,6 +343,7 @@ class ContentPageState extends State<ContentPage> {
           key: _textScaffoldKey,
           keyName: AppLocalizations.of(context).getLanguageText('text'),
           value: text,
+          obscureText: true,
           maxLines: null,
           hintText: AppLocalizations.of(context).getLanguageText('input_text_hint'),
           editable: editable,
@@ -372,6 +373,7 @@ class ContentPageState extends State<ContentPage> {
         key: _extraScaffoldKeyMap[key],
         keyName: key,
         value: extra[key],
+        obscureText: true,
         hintText: AppLocalizations.of(context).getLanguageText('input_hint'),
         editable: editable,
         onChange: (value) {

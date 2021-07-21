@@ -21,21 +21,25 @@ class ContentTopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     var tagIcon = 'images/ic_tag.png';
     var tagIconColor = ColorUtils.getTagColor();
+    var tagIconBgColor = ColorUtils.getTagBgColor();
     var title = "";
     switch (contentType) {
       case PasswordType:
         tagIcon = 'images/ic_key.png';
         tagIconColor = ColorUtils.getPasswordColor();
+        tagIconBgColor = ColorUtils.getPasswordBgColor();
         title = AppLocalizations.of(context).getLanguageText('password');
         break;
       case TextType:
         tagIcon = 'images/ic_file-text.png';
         tagIconColor = ColorUtils.getTextColor();
+        tagIconBgColor = ColorUtils.getTextBgColor();
         title = AppLocalizations.of(context).getLanguageText('text');
         break;
       case TOTPType:
         tagIcon = 'images/ic_stopwatch.png';
         tagIconColor = ColorUtils.getTotpColor();
+        tagIconBgColor = ColorUtils.getTotpBgColor();
         title = AppLocalizations.of(context).getLanguageText('totp');
         break;
     }
@@ -59,7 +63,7 @@ class ContentTopBar extends StatelessWidget {
     return Container(
       height: 50.0,
       decoration: BoxDecoration(
-        border: const Border(bottom: const BorderSide(color: const Color(0xffe6ecff))),
+        border: const Border(bottom: const BorderSide(color: ColorUtils.divider)),
       ),
       child: Row(
         children: <Widget>[
@@ -73,6 +77,7 @@ class ContentTopBar extends StatelessWidget {
               child: Icon(
                 IconFonts.arrowLeft,
                 size: 24.0,
+                color: ColorUtils.white,
               ),
             ),
           ),
@@ -82,8 +87,9 @@ class ContentTopBar extends StatelessWidget {
             margin: EdgeInsets.only(right: 7.0),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: tagIconColor,
-                borderRadius: BorderRadius.all(Radius.circular(999.0))
+              color: tagIconBgColor,
+              border: Border.all(color: tagIconColor),
+              borderRadius: BorderRadius.all(Radius.circular(999.0))
             ),
             child: Image.asset(tagIcon, width: 16.0, height: 16.0),
           ),
@@ -95,7 +101,7 @@ class ContentTopBar extends StatelessWidget {
                 title,
                 style: TextStyle(
                   fontSize: 14.0,
-                  color: const Color(0xff434343),
+                  color: ColorUtils.textColor,
                 ),
               ),
             ),

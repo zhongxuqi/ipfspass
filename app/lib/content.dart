@@ -398,13 +398,13 @@ class ContentPageState extends State<ContentPage> {
             padding: EdgeInsets.all(10.0),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: const Color(0xff212121),
+              color: ColorUtils.green,
               borderRadius: BorderRadius.circular(5.0),
             ),
             child: Text(
               AppLocalizations.of(context).getLanguageText('add_key'),
               style: TextStyle(
-                color: Colors.white,
+                color: ColorUtils.white,
                 fontSize: 15.0,
               ),
             ),
@@ -432,7 +432,7 @@ class ContentPageState extends State<ContentPage> {
     }
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: ColorUtils.themeDarkColor,
       body: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: Stack(
@@ -444,7 +444,7 @@ class ContentPageState extends State<ContentPage> {
                   text: Text(
                     AppLocalizations.of(context).getLanguageText('cancel'),
                     style: TextStyle(
-                      color: Colors.grey[800],
+                      color: ColorUtils.orange,
                       fontSize: 15.0,
                     ),
                   ),
@@ -460,7 +460,7 @@ class ContentPageState extends State<ContentPage> {
                   text: Text(
                     AppLocalizations.of(context).getLanguageText('submit'),
                     style: TextStyle(
-                      color: const Color(0xff764ba2),
+                      color: ColorUtils.green,
                       fontSize: 15.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -472,7 +472,7 @@ class ContentPageState extends State<ContentPage> {
                   text: Text(
                     AppLocalizations.of(context).getLanguageText('edit'),
                     style: TextStyle(
-                      color: Colors.yellow[800],
+                      color: ColorUtils.blue,
                       fontSize: 15.0,
                     ),
                   ),
@@ -579,7 +579,7 @@ class ContentTextItemState extends State<ContentTextItem> {
       margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: MediaQuery.of(context).size.width * 0.07),
       padding: EdgeInsets.all(7.0),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey[100]))
+        border: Border(bottom: BorderSide(color: ColorUtils.divider))
       ),
       child: Column(
         children: <Widget>[
@@ -592,7 +592,7 @@ class ContentTextItemState extends State<ContentTextItem> {
                   child: Text(
                     keyName,
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: ColorUtils.textColor,
                       fontSize: 18.0,
                     ),
                   ),
@@ -605,7 +605,7 @@ class ContentTextItemState extends State<ContentTextItem> {
                   margin: EdgeInsets.only(right: 10.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: ColorUtils.blue,
                       borderRadius: BorderRadius.all(Radius.circular(3.0))
                   ),
                   child: Image.asset(isShow?'images/ic_eye.png':'images/ic_eye-slash.png', width: 14.0, height: 14.0),
@@ -623,7 +623,7 @@ class ContentTextItemState extends State<ContentTextItem> {
                   margin: EdgeInsets.only(right: editable&&widget.onCloseListener!=null?10.0:0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: ColorUtils.green,
                       borderRadius: BorderRadius.all(Radius.circular(3.0))
                   ),
                   child: Image.asset('images/ic_copy.png', width: 14.0, height: 14.0),
@@ -653,7 +653,7 @@ class ContentTextItemState extends State<ContentTextItem> {
             margin: EdgeInsets.symmetric(horizontal: 10.0),
             padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
             decoration: BoxDecoration(
-              color: const Color(0xfff2f4f8),
+              color: ColorUtils.themeLightColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(5.0),
               ),
@@ -668,18 +668,18 @@ class ContentTextItemState extends State<ContentTextItem> {
                     maxLines: (widget.obscureText?isShow:true)?widget.maxLines:1,
                     minLines: widget.maxLines==null&&(widget.obscureText?isShow:true)?2:1,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: ColorUtils.textColor,
                       fontSize: 15.0,
                       textBaseline: TextBaseline.alphabetic,
                     ),
                     placeholder: hintText,
                     placeholderStyle: TextStyle(
-                      color: Colors.grey,
+                      color: ColorUtils.grey,
                       fontSize: 15.0,
                       textBaseline: TextBaseline.alphabetic,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.transparent,
+                      color: ColorUtils.themeLightColor,
                     ),
                     onChanged: widget.onChange,
                   ),
@@ -689,7 +689,7 @@ class ContentTextItemState extends State<ContentTextItem> {
                   child: Text(
                     _textError,
                     style: TextStyle(
-                      color: Colors.red,
+                      color: ColorUtils.red,
                       fontSize: 15.0,
                     ),
                   ),
@@ -711,7 +711,7 @@ class ContentTextItemState extends State<ContentTextItem> {
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 14.0,
-                      color: Colors.grey[700],
+                      color: ColorUtils.textColor,
                     ),
                   ):Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -721,7 +721,7 @@ class ContentTextItemState extends State<ContentTextItem> {
                       child: Icon(
                         IconFonts.circle,
                         size: 7.0,
-                        color: Colors.grey[700],
+                        color: ColorUtils.textColor,
                       ),
                     )),
                   ),
@@ -846,8 +846,8 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
         Container(
           padding: EdgeInsets.fromLTRB(15.0, 12.0, 15.0, 12.0),
           child: InkWell(
-            splashColor: Colors.white,
-            highlightColor: Colors.white,
+            splashColor: ColorUtils.white,
+            highlightColor: ColorUtils.white,
             borderRadius: BorderRadius.circular(5.0),
             child: Container(
               padding: EdgeInsets.all(10.0),
@@ -859,7 +859,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
               child: Text(
                 AppLocalizations.of(context).getLanguageText('generate'),
                 style: TextStyle(
-                  color: Colors.white,
+                  color: ColorUtils.white,
                   fontSize: 15.0,
                 ),
               ),
@@ -1127,7 +1127,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
       margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: MediaQuery.of(context).size.width * 0.07),
       padding: EdgeInsets.all(7.0),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey[100])),
+        border: Border(bottom: BorderSide(color: ColorUtils.divider)),
       ),
       child: Column(
         children: <Widget>[
@@ -1140,7 +1140,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                   child: Text(
                     keyName,
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: ColorUtils.white,
                       fontSize: 18.0,
                     ),
                   ),
@@ -1153,7 +1153,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                   margin: EdgeInsets.only(right: 10.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: ColorUtils.blue,
                       borderRadius: BorderRadius.all(Radius.circular(3.0))
                   ),
                   child: Image.asset(isShow?'images/ic_eye.png':'images/ic_eye-slash.png', width: 14.0, height: 14.0),
@@ -1171,7 +1171,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                   margin: EdgeInsets.only(right: 0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: ColorUtils.green,
                       borderRadius: BorderRadius.all(Radius.circular(3.0))
                   ),
                   child: Image.asset('images/ic_copy.png', width: 14.0, height: 14.0),
@@ -1186,8 +1186,9 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
           editable?Container(
             margin: EdgeInsets.symmetric(horizontal: 10.0),
             padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+            height: 38,
             decoration: BoxDecoration(
-              color: const Color(0xfff2f4f8),
+              color: ColorUtils.themeLightColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(5.0),
               ),
@@ -1201,18 +1202,18 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                     obscureText: widget.obscureText?!isShow:false,
                     maxLines: widget.maxLines,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: ColorUtils.textColor,
                       fontSize: 15.0,
                       textBaseline: TextBaseline.alphabetic,
                     ),
                     placeholder: hintText,
                     placeholderStyle: TextStyle(
-                      color: Colors.grey,
+                      color: ColorUtils.grey,
                       fontSize: 15.0,
                       textBaseline: TextBaseline.alphabetic,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.transparent,
+                      color: ColorUtils.themeLightColor,
                     ),
                     onChanged: widget.onChange,
                   ),
@@ -1244,7 +1245,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 14.0,
-                      color: Colors.grey[700],
+                      color: ColorUtils.textColor,
                     ),
                   ):Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -1254,7 +1255,7 @@ class ContentPasswordItemState extends State<ContentPasswordItem> {
                       child: Icon(
                         IconFonts.circle,
                         size: 7.0,
-                        color: Colors.grey[700],
+                        color: ColorUtils.textColor,
                       ),
                     )),
                   ),
@@ -1369,7 +1370,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
       margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: MediaQuery.of(context).size.width * 0.07),
       padding: EdgeInsets.all(7.0),
       decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey[100]))
+          border: Border(bottom: BorderSide(color: ColorUtils.divider))
       ),
       child: Column(
         children: <Widget>[
@@ -1382,7 +1383,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                   child: Text(
                     keyName,
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: ColorUtils.textColor,
                       fontSize: 18.0,
                     ),
                   ),
@@ -1395,7 +1396,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                   margin: EdgeInsets.only(right: 10.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: ColorUtils.blue,
                       borderRadius: BorderRadius.all(Radius.circular(3.0))
                   ),
                   child: Image.asset(isShow?'images/ic_eye.png':'images/ic_eye-slash.png', width: 14.0, height: 14.0),
@@ -1413,7 +1414,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                   margin: EdgeInsets.only(right: editable&&widget.onCloseListener!=null?10.0:0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: ColorUtils.green,
                       borderRadius: BorderRadius.all(Radius.circular(3.0))
                   ),
                   child: Image.asset('images/ic_copy.png', width: 14.0, height: 14.0),
@@ -1430,7 +1431,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                   margin: EdgeInsets.only(),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: ColorUtils.red,
                       borderRadius: BorderRadius.all(Radius.circular(3.0))
                   ),
                   child: Image.asset('images/ic_close.png', width: 14.0, height: 14.0),
@@ -1443,7 +1444,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
             margin: EdgeInsets.symmetric(horizontal: 10.0),
             padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
             decoration: BoxDecoration(
-              color: const Color(0xfff2f4f8),
+              color: ColorUtils.themeLightColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(5.0),
               ),
@@ -1458,18 +1459,18 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                     controller: textCtl,
                     obscureText: widget.obscureText?!isShow:false,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: ColorUtils.textColor,
                       fontSize: 15.0,
                       textBaseline: TextBaseline.alphabetic,
                     ),
                     placeholder: hintText,
                     placeholderStyle: TextStyle(
-                      color: Colors.grey,
+                      color: ColorUtils.grey,
                       fontSize: 15.0,
                       textBaseline: TextBaseline.alphabetic,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.transparent,
+                      color: ColorUtils.themeLightColor,
                     ),
                     onChanged: widget.onChange,
                   ),
@@ -1529,7 +1530,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 14.0,
-                      color: Colors.grey[700],
+                      color: ColorUtils.textColor,
                     ),
                   ):Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -1539,7 +1540,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                       child: Icon(
                         IconFonts.circle,
                         size: 7.0,
-                        color: Colors.grey[700],
+                        color: ColorUtils.textColor,
                       ),
                     )),
                   ),
@@ -1551,14 +1552,14 @@ class ContentTotpItemState extends State<ContentTotpItem> {
             margin: EdgeInsets.all(10.0),
             padding: EdgeInsets.all(3.0),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: ColorUtils.white,
               borderRadius: BorderRadius.all(
                 Radius.circular(2.0),
               ),
             ),
             child: LinearProgressIndicator(
               value: percent,
-              valueColor: AlwaysStoppedAnimation(Colors.black54),
+              valueColor: AlwaysStoppedAnimation(ColorUtils.themeLightColor),
               backgroundColor: const Color(0x00000000),
             ),
           ),
@@ -1573,7 +1574,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                     child: Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: ColorUtils.themeLightColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(4.0),
                         ),
@@ -1581,7 +1582,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                       child: Text(
                         (totpCode ~/ 100000).toString(),
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: ColorUtils.textColorGrey,
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1596,7 +1597,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                     child: Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: ColorUtils.themeLightColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(4.0),
                         ),
@@ -1604,7 +1605,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                       child: Text(
                         (totpCode % 100000 ~/ 10000).toString(),
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: ColorUtils.textColorGrey,
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1619,7 +1620,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                     child: Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: ColorUtils.themeLightColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(4.0),
                         ),
@@ -1627,7 +1628,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                       child: Text(
                         (totpCode % 10000 ~/ 1000).toString(),
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: ColorUtils.textColorGrey,
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1642,7 +1643,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                     child: Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: ColorUtils.themeLightColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(4.0),
                         ),
@@ -1650,7 +1651,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                       child: Text(
                         (totpCode % 1000 ~/ 100).toString(),
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: ColorUtils.textColorGrey,
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1665,7 +1666,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                     child: Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: ColorUtils.themeLightColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(4.0),
                         ),
@@ -1673,7 +1674,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                       child: Text(
                         (totpCode % 100 ~/ 10).toString(),
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: ColorUtils.textColorGrey,
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -1688,7 +1689,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                     child: Container(
                       padding: EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: ColorUtils.themeLightColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(4.0),
                         ),
@@ -1696,7 +1697,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                       child: Text(
                         (totpCode % 10).toString(),
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: ColorUtils.textColorGrey,
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
                         ),

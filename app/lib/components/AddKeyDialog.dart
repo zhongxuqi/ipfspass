@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/localization.dart';
 import 'FormInput.dart';
+import '../utils/colors.dart';
 
 void showAddKeyDialog(BuildContext context, {@required ValueChanged<String> callback,
   @required String keyName, @required String keyNameHint, @required initValue}) {
@@ -55,6 +56,7 @@ class AddKeyState extends State<AddKey> {
   Widget build(BuildContext context) {
     return SimpleDialog(
       contentPadding: EdgeInsets.only(bottom: 10),
+      backgroundColor: ColorUtils.themeDarkColor,
       children: <Widget>[
         Container(
           child: FormInput(
@@ -81,13 +83,13 @@ class AddKeyState extends State<AddKey> {
                     padding: EdgeInsets.all(5.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: ColorUtils.themeLightColor,
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
                     child: Text(
                       AppLocalizations.of(context).getLanguageText('cancel'),
                       style: TextStyle(
-                        color: Colors.black,
+                        color: ColorUtils.textColor,
                       ),
                     ),
                   ),
@@ -103,13 +105,13 @@ class AddKeyState extends State<AddKey> {
                     padding: EdgeInsets.all(5.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: ColorUtils.blue,
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
                     child: Text(
                       AppLocalizations.of(context).getLanguageText('confirm'),
                       style: TextStyle(
-                        color: Colors.white,
+                        color: ColorUtils.textColor,
                       ),
                     ),
                   ),

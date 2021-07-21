@@ -17,6 +17,7 @@ class ColorUtils {
   static const Color divider = const Color(0xff333436);
   static const Color textColor = Colors.white;
   static const Color textColorGrey = const Color(0xffd2d2d2);
+  static const Color red = const Color(0xffea2f49);
 
   static Color getPasswordColor() {
     return blue;

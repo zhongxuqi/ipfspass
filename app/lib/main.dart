@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'components/AlertDialog.dart';
 import 'components/DrawerButton.dart';
 import 'components/FragmentContent.dart';
+import 'components/SortDialog.dart';
 import 'db/data.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -11,6 +12,7 @@ import 'login.dart';
 import 'utils/colors.dart';
 import 'utils/iconfonts.dart';
 import 'welcome.dart';
+import 'common/types.dart' as types;
 
 void main() {
   runApp(MyApp());
@@ -200,7 +202,16 @@ class _MainPageState extends State<MainPage> {
                     ),
                     InkWell(
                       onTap: () async {
-                        
+                        final sortBy = await StoreUtils.getSortByKey();
+                        final sortType = await StoreUtils.getSortTypeKey();
+                        showSortDialog(context: context, sortBy: sortBy, sortType: sortType, callback: (types.SortBy sortBy, types.SortType sortType) async {
+                          await StoreUtils.setSortByKey(sortBy);
+                          await StoreUtils.setSortTypeKey(sortType);
+                          if (_fragmentContentKey != null && _fragmentContentKey.currentState != null) {
+                            _fragmentContentKey.currentState.initContentList();
+                          }
+                          Navigator.of(context).pop();
+                        });
                       },
                       child: Container(
                         width: 50.0,
@@ -288,18 +299,6 @@ class _MainPageState extends State<MainPage> {
                               color: ColorUtils.white,
                               fontWeight: FontWeight.bold,
                             ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                          child: DrawerButton(
-                            text: AppLocalizations.of(context).getLanguageText('sync_data'),
-                            iconData: IconFonts.update,
-                            isActive: false,
-                            onClick: () {
-                              Navigator.of(context).pop();
-                              // todo 同步数据
-                            },
                           ),
                         ),
                         Container(

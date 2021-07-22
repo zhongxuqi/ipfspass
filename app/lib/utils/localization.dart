@@ -284,6 +284,30 @@ class AppLocalizations {
       "en": 'Second',
       "zh": '秒',
     },
+    "old_master_password": {
+      "en": 'Old Master Password',
+      "zh": '旧主密码',
+    },
+    "old_master_password_hint": {
+      "en": 'Please Input Old Master Password',
+      "zh": '请输入旧主密码',
+    },
+    "new_master_password": {
+      "en": 'New Master Password',
+      "zh": '新主密码',
+    },
+    "new_master_password_hint": {
+      "en": 'Please Input New Master Password',
+      "zh": '请输入新主密码',
+    },
+    "repeat_new_master_password": {
+      "en": 'Repeat New Master Password',
+      "zh": '重复新主密码',
+    },
+    "repeat_new_master_password_hint": {
+      "en": 'Please Repeat Input New Master Password',
+      "zh": '请重复输入新主密码',
+    },
   };
 
   String getLanguageText(String textID) {

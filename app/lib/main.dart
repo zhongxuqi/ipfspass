@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'dart:async';
 
 import 'login.dart';
+import 'modifyMasterPassword.dart';
 import 'settings.dart';
 import 'utils/colors.dart';
 import 'utils/iconfonts.dart';
@@ -347,7 +348,10 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                             isActive: false,
                             onClick: () {
                               Navigator.of(context).pop();
-                              // todo 修改主密码
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ModifyMasterPasswordPage()),
+                              );
                             },
                           ),
                         ),

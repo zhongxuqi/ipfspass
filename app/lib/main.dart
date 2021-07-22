@@ -1,3 +1,4 @@
+import 'package:app/auth.dart';
 import 'package:app/utils/localization.dart';
 import 'package:app/utils/store.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,10 @@ import 'components/FragmentContent.dart';
 import 'components/SortDialog.dart';
 import 'db/data.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'dart:async';
 
 import 'login.dart';
+import 'settings.dart';
 import 'utils/colors.dart';
 import 'utils/iconfonts.dart';
 import 'welcome.dart';
@@ -59,7 +62,7 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FragmentContentState> _fragmentContentKey = new GlobalKey<FragmentContentState>();
 
@@ -70,9 +73,12 @@ class _MainPageState extends State<MainPage> {
   FragmentContent fragmentContent;
   var fragments = <Widget>[];
 
+  Timer timer;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     fragmentContent = FragmentContent(
       key: _fragmentContentKey,
@@ -85,6 +91,38 @@ class _MainPageState extends State<MainPage> {
     );
 
     fragments.add(fragmentContent);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    int lockTimeout = await StoreUtils.getLockScreen();
+    switch (state) {
+      case AppLifecycleState.paused:
+        timer = Timer(Duration(seconds: lockTimeout), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) =>
+              AuthPage(),
+            ),
+          );
+        });
+        break;
+      case AppLifecycleState.resumed:
+        if (timer != null) {
+          timer.cancel();
+          timer = null;
+        }
+        break;
+      default:
+        break;
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
@@ -342,18 +380,10 @@ class _MainPageState extends State<MainPage> {
                             isActive: false,
                             onClick: () {
                               Navigator.of(context).pop();
-                              // todo 设置
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                          child: DrawerButton(
-                            text: AppLocalizations.of(context).getLanguageText('feedback'),
-                            iconData: IconFonts.chat,
-                            isActive: false,
-                            onClick: () {
-                              // todo 反馈
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SettingsPage()),
+                              );
                             },
                           ),
                         ),

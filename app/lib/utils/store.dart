@@ -66,4 +66,16 @@ class StoreUtils {
     }
     return types.SortType.desc;
   }
+
+  static const LockScreenKey = "lock_screen";
+  static setLockScreen(int timeout) async {
+    var sharedPreference = await SharedPreferences.getInstance();
+    sharedPreference.setInt(LockScreenKey, timeout);
+  }
+  static Future<int> getLockScreen() async {
+    var sharedPreference = await SharedPreferences.getInstance();
+    var t = sharedPreference.getInt(LockScreenKey);
+    if (t == null) return 30;
+    return t;
+  }
 }

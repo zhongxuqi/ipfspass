@@ -276,6 +276,14 @@ class AppLocalizations {
       "en": 'Descending',
       "zh": '降序',
     },
+    "reauth_timeout": {
+      "en": 'Timeout to lock screen',
+      "zh": '超时锁屏',
+    },
+    "second": {
+      "en": 'Second',
+      "zh": '秒',
+    },
   };
 
   String getLanguageText(String textID) {

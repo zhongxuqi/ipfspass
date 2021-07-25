@@ -75,6 +75,8 @@ class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
     for (var newContentInfo in newContentInfos) {
       await dbIns.updateContentInfo(newContentInfo);
     }
+    await StoreUtils.setMasterPassword(modifyMasterPasswordNewCtl.text);
+    Navigator.of(context).pop();
     Navigator.of(context).pop();
   }
 

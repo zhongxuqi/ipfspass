@@ -50,6 +50,7 @@ func (s *Handler) initRouter(ml mklog.Logger) {
 	// api
 	apiMux := http.NewServeMux()
 	apiMux.HandleFunc("/api/content", s.HandleContent)
+	apiMux.HandleFunc("/api/ipfs", s.HandleIPFS)
 	s.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		apiMux.ServeHTTP(w, r)
 	})

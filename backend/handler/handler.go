@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	shell "github.com/ipfs/go-ipfs-api"
 	"github.com/zhongxuqi/ipfspass/common"
 	"github.com/zhongxuqi/ipfspass/utils"
 	"github.com/zhongxuqi/mklibs/mkerr"
@@ -14,8 +13,6 @@ import (
 
 type Handler struct {
 	mux *http.ServeMux
-
-	ipfsShell *shell.Shell
 }
 
 func NewHandler(ml mklog.Logger) *Handler {
@@ -23,7 +20,6 @@ func NewHandler(ml mklog.Logger) *Handler {
 		mux: http.NewServeMux(),
 	}
 
-	handler.initIPFS(ml)
 	handler.initRouter(ml)
 
 	return handler
@@ -49,13 +45,8 @@ func (s *Handler) initRouter(ml mklog.Logger) {
 
 	// api
 	apiMux := http.NewServeMux()
-	apiMux.HandleFunc("/api/content", s.HandleContent)
 	apiMux.HandleFunc("/api/ipfs", s.HandleIPFS)
 	s.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		apiMux.ServeHTTP(w, r)
 	})
-}
-
-func (s *Handler) initIPFS(ml mklog.Logger) {
-	s.ipfsShell = shell.NewShell("localhost:6001")
 }

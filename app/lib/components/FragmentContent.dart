@@ -161,7 +161,7 @@ class FragmentContentState extends State<FragmentContent> {
     showAlertDialog(context, AppLocalizations.of(context).getLanguageText('affirm_delete_content'),
       callback: () async {
         var instance = getDataModel();
-        await instance.deleteContentInfo(contentDetail.content_id);
+        await instance.deleteContentInfo(contentDetail.id);
         initContentList();
       },
     );
@@ -280,8 +280,10 @@ class FragmentContentState extends State<FragmentContent> {
                                       List<ContentDetail> contentDetails = <ContentDetail>[];
                                       for (var item in tagContentMap[tagName]) {
                                         contentDetails.add(ContentDetail(
+                                          item.id,
                                           item.content_id,
                                           currTime,
+                                          item.contentExtra,
                                           item.title,
                                           item.content,
                                           item.color,
@@ -316,8 +318,10 @@ class FragmentContentState extends State<FragmentContent> {
                                   List<ContentDetail> contentDetails = <ContentDetail>[];
                                   for (var item in tagContentMap[tagName]) {
                                     contentDetails.add(ContentDetail(
+                                      item.id,
                                       item.content_id,
                                       currTime,
+                                      item.contentExtra,
                                       item.title,
                                       item.content,
                                       item.color,
@@ -369,7 +373,7 @@ class FragmentContentState extends State<FragmentContent> {
                         context,
                         MaterialPageRoute(builder: (context) => ContentPage(
                           contentType: item.type,
-                          contentID: item.content_id,
+                          id: item.id,
                           refreshCallback: () async {
                             initContentList();
                           },
@@ -390,10 +394,12 @@ class FragmentContentState extends State<FragmentContent> {
                                 text: AppLocalizations.of(context).getLanguageText('remove_from_tag'),
                                 onClickListener: () async {
                                   var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-                                  List<ContentDetail> contentDetails = List<ContentDetail>();
+                                  List<ContentDetail> contentDetails = <ContentDetail>[];
                                   contentDetails.add(ContentDetail(
+                                    item.id,
                                     item.content_id,
                                     currTime,
+                                    item.contentExtra,
                                     item.title,
                                     item.content,
                                     item.color,
@@ -812,8 +818,10 @@ class ModalAddState extends State<ModalAdd> {
                         List<ContentDetail> contentDetails = <ContentDetail>[];
                         for (var contentItem in selectedContentList) {
                           contentDetails.add(ContentDetail(
+                            contentItem.id,
                             contentItem.content_id,
                             currTime,
+                            contentItem.contentExtra,
                             contentItem.title,
                             contentItem.content,
                             contentItem.color,
@@ -979,8 +987,10 @@ class ModalAddState extends State<ModalAdd> {
                         List<ContentDetail> contentDetails = <ContentDetail>[];
                         for (var contentItem in selectedContentList) {
                           contentDetails.add(ContentDetail(
+                            contentItem.id,
                             contentItem.content_id,
                             currTime,
+                            contentItem.contentExtra,
                             contentItem.title,
                             contentItem.content,
                             contentItem.color,

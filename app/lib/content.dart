@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:uuid/uuid.dart';
 import 'components/ContentTopbar.dart';
 import 'utils/iconfonts.dart';
 import 'utils/localization.dart';
@@ -21,15 +20,15 @@ import 'QrScanner.dart';
 
 class ContentPage extends StatefulWidget {
   final VoidCallback refreshCallback;
-  final String contentID;
+  final int id;
   final int contentType;
   final String tagName;
 
-  ContentPage({Key key, this.contentID, @required this.contentType, @required this.refreshCallback, @required this.tagName}):super(key: key);
+  ContentPage({Key key, this.id, @required this.contentType, @required this.refreshCallback, @required this.tagName}):super(key: key);
 
   @override
   State<StatefulWidget> createState() => ContentPageState(
-    contentID: this.contentID,
+    id: this.id,
     refreshCallback: this.refreshCallback,
     contentType: this.contentType,
     tagName: this.tagName,
@@ -42,7 +41,7 @@ class ContentPageState extends State<ContentPage> {
   final VoidCallback refreshCallback;
   final int contentType;
   final String tagName;
-  String contentID;
+  int id;
 
   ContentDetail contentDetail;
 
@@ -83,19 +82,19 @@ class ContentPageState extends State<ContentPage> {
   final GlobalKey<ContentTextItemState> _hintWordScaffoldKey = GlobalKey<ContentTextItemState>();
   String hintWord = '';
 
-  ContentPageState({this.contentID, this.contentType, @required this.refreshCallback, @required this.tagName});
+  ContentPageState({this.id, this.contentType, @required this.refreshCallback, @required this.tagName});
 
   @override
   initState() {
     super.initState();
-    editable = contentID == null;
+    editable = id == null;
     getContentDetail();
   }
 
   getContentDetail() async {
-    if (contentID != null) {
+    if (id != null) {
       var instance = getDataModel();
-      var contentInfo = await instance.getContentInfo(contentID);
+      var contentInfo = await instance.getContentInfo(id);
       var masterPassword = await StoreUtils.getMasterPassword();
       contentDetail = await convert2ContentDetail(masterPassword, contentInfo);
       renderContentDetail();
@@ -276,26 +275,18 @@ class ContentPageState extends State<ContentPage> {
     if (tagName != null && tagName != '' && !tags.contains(tagName)) {
       tags.add(tagName);
     }
-    var contentDetail = ContentDetail(contentID, currTime, title, content, "blue", contentType, this.account, newExtra, tags);
-    if (contentID == null) {
-      contentDetail.content_id = Uuid().v4();
-      var masterPassword = await StoreUtils.getMasterPassword();
-      var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
-      getDataModel().insertContentInfo(contentInfo);
+    var contentDetail = ContentDetail(id, "", currTime, ContentExtra(), title, content, "blue", contentType, this.account, newExtra, tags);
+    var masterPassword = await StoreUtils.getMasterPassword();
+    var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
+    await getDataModel().upsertContentInfo(contentInfo, (id) {
+      contentInfo.id = id;
       this.refreshCallback();
-      contentID = contentDetail.content_id;
+      this.id = contentInfo.id;
       this.contentDetail = contentDetail;
       setEditable(false);
       renderContentDetail();
-    } else {
-      var masterPassword = await StoreUtils.getMasterPassword();
-      var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
-      getDataModel().updateContentInfo(contentInfo);
-      this.refreshCallback();
-      this.contentDetail = contentDetail;
-      setEditable(false);
-      renderContentDetail();
-    }
+    });
+    isSubmitting = false;
   }
 
   @override
@@ -442,7 +433,7 @@ class ContentPageState extends State<ContentPage> {
             ContentTopBar(
               contentType: contentType,
               actions: this.editable?<ContentTopBarAction>[
-                this.contentID==null?null:ContentTopBarAction(
+                this.id==null?null:ContentTopBarAction(
                   text: Text(
                     AppLocalizations.of(context).getLanguageText('cancel'),
                     style: TextStyle(

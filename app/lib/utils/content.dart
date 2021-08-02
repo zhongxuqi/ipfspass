@@ -4,8 +4,10 @@ import 'encrypt.dart' as encrypt;
 import 'dart:convert';
 
 class ContentDetail {
+  int id;
   String content_id;
   int last_modify_time;
+  ContentExtra contentExtra;
 
   String title;
   String content;
@@ -15,7 +17,7 @@ class ContentDetail {
   Map<String, dynamic> extra;
   List<String> tags;
 
-  ContentDetail(this.content_id, this.last_modify_time, this.title, this.content, this.color, this.type, this.account, this.extra, this.tags);
+  ContentDetail(this.id, this.content_id, this.last_modify_time, this.contentExtra, this.title, this.content, this.color, this.type, this.account, this.extra, this.tags);
 }
 
 Future<ContentInfo> convert2ContentInfo(String masterPassword, ContentDetail contentDetail) async {
@@ -28,7 +30,7 @@ Future<ContentInfo> convert2ContentInfo(String masterPassword, ContentDetail con
     'extra': contentDetail.extra,
     'tags': contentDetail.tags,
   }));
-  return ContentInfo(contentDetail.content_id, encryptedData, contentDetail.last_modify_time);
+  return ContentInfo(contentDetail.id, contentDetail.content_id, encryptedData, contentDetail.contentExtra, contentDetail.last_modify_time);
 }
 
 Future<ContentDetail> convert2ContentDetail(String masterPassword, ContentInfo contentInfo) async {
@@ -43,7 +45,7 @@ Future<ContentDetail> convert2ContentDetail(String masterPassword, ContentInfo c
       }
     }
   }
-  return ContentDetail(contentInfo.content_id, contentInfo.last_modify_time,
+  return ContentDetail(contentInfo.id, contentInfo.content_id, contentInfo.last_modify_time, contentInfo.extra,
     decryptedData['title'], decryptedData['content'], decryptedData['color'], decryptedData['type'], decryptedData['account'],
       decryptedData['extra']==null?Map<String, dynamic>():decryptedData['extra'], tagList);
 }

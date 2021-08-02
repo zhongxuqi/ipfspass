@@ -20,8 +20,8 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(duration: const Duration(seconds: 2, microseconds: 200), vsync: this);
-    Timer(Duration(seconds: 1, milliseconds: 500), () async {
+    controller = AnimationController(duration: const Duration(seconds: 2, microseconds: 0), vsync: this);
+    Timer(Duration(seconds: 2, milliseconds: 200), () async {
       final masterPassword = await StoreUtils.getMasterPassword();
       if (masterPassword.isEmpty) {
         Navigator.pushReplacement(

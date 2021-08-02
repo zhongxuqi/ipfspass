@@ -69,7 +69,7 @@ class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
     for (var contentInfo in contentInfos) {
       var decryptedData = await encrypt.decryptData(modifyMasterPasswordOldCtl.text, contentInfo.encrypted_data);
       var encryptedData = await encrypt.encryptData(modifyMasterPasswordNewCtl.text, decryptedData);
-      newContentInfos.add(ContentInfo(contentInfo.content_id, encryptedData, currTime));
+      newContentInfos.add(ContentInfo(contentInfo.id, contentInfo.content_id, encryptedData, contentInfo.extra, currTime));
     }
     showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
     for (var newContentInfo in newContentInfos) {

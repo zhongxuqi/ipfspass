@@ -100,11 +100,9 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.paused:
         timer = Timer(Duration(seconds: lockTimeout), () {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>
-              AuthPage(),
-            ),
+            MaterialPageRoute(builder: (context) => AuthPage(isLock: true)),
           );
         });
         break;

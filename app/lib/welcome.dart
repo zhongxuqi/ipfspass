@@ -34,7 +34,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) =>
-            AuthPage(),
+            AuthPage(isLock: false),
           ),
         );
       }

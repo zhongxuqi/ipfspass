@@ -55,7 +55,7 @@ class SettingsPageState extends State<SettingsPage> {
                     child: Card(
                       elevation: 1.0,
                       color: ColorUtils.themeLightColor,
-                      margin: EdgeInsets.fromLTRB(10.0, 10.0, 5.0, 10.0),
+                      margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                       child: Container(
                         padding: EdgeInsets.all(10.0),
                         child: Row(

@@ -595,12 +595,30 @@ class ContentItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border(bottom: BorderSide(color: ColorUtils.divider)),
                 ),
-                child: Text(
-                  contentDetail.title,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    color: ColorUtils.textColor,
-                  ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        contentDetail.title,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: ColorUtils.textColor,
+                        ),
+                      ),
+                    ),
+                    if (contentDetail.type == PasswordType || 
+                      contentDetail.type == TextType || 
+                      contentDetail.type == TOTPType) Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Icon(
+                        contentDetail.content_id.isEmpty ? IconFonts.offline:IconFonts.online,
+                        size: 22.0,
+                        color: ColorUtils.red,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

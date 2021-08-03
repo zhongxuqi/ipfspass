@@ -21,4 +21,6 @@ class IconFonts {
   static const IconData check_box_outline_bl = IconData(0xec58, fontFamily: 'iconfont');
   static const IconData camera = IconData(0xe603, fontFamily: 'iconfont');
   static const IconData add = IconData(0xe6fa, fontFamily: 'iconfont');
+  static const IconData online = IconData(0xe65e, fontFamily: 'iconfont');
+  static const IconData offline = IconData(0xe64d, fontFamily: 'iconfont');
 }

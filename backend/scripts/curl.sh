@@ -14,6 +14,7 @@ curl -X POST "https://10.via0.com/api/v0/version"
 # 公共读取节点
 curl "https://ipfs.itargo.io/ipfs/bafybeidutlmqfu62zhn36lapfi7i5iyxvqnte7fv7zhq2rticzustk4rlq"
 curl "https://ipfs.io/ipfs/bafybeidutlmqfu62zhn36lapfi7i5iyxvqnte7fv7zhq2rticzustk4rlq"
+curl "https://infura-ipfs.io/ipfs/bafybeidutlmqfu62zhn36lapfi7i5iyxvqnte7fv7zhq2rticzustk4rlq"
 
 # 公共写入节点
 curl -X POST -F file=@ipfspass.txt "https://infura-ipfs.io:5001/api/v0/add?hash=sha2-256&inline-limit=32"

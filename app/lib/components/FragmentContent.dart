@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:app/utils/content.dart';
 import 'package:app/utils/iconfonts.dart';
 import 'package:app/utils/store.dart';
@@ -124,7 +123,7 @@ class FragmentContentState extends State<FragmentContent> {
       }
       for (String tagItem in contentItem.tags) {
         if (!tagContentMap.containsKey(tagItem)) {
-          tagContentMap[tagItem] = List<ContentDetail>();
+          tagContentMap[tagItem] = <ContentDetail>[];
         }
         tagContentMap[tagItem].add(contentItem);
         if (tags.where((tagName) => tagName == tagItem).length <= 0) {
@@ -637,7 +636,7 @@ class ContentItem extends StatelessWidget {
                       child: Icon(
                         contentDetail.content_id.isEmpty ? IconFonts.offline:IconFonts.online,
                         size: 22.0,
-                        color: ColorUtils.red,
+                        color: contentDetail.content_id.isEmpty ? ColorUtils.red:ColorUtils.green,
                       ),
                     ),
                   ],

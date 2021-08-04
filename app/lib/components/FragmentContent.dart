@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app/utils/content.dart';
 import 'package:app/utils/iconfonts.dart';
 import 'package:app/utils/store.dart';
@@ -14,6 +16,7 @@ import 'AddKeyDialog.dart';
 import 'LoadingDialog.dart';
 import 'FormInput.dart';
 import 'Toast.dart';
+import '../utils/ipfs.dart';
 
 class FragmentContent extends StatefulWidget {
   String keyword = '';
@@ -418,9 +421,28 @@ class FragmentContentState extends State<FragmentContent> {
                                   initContentList();
                                 },
                               ):Container(),
+                              if (item.content_id.isEmpty) ActionItem(
+                                icon: 'images/ic_upload.png',
+                                color: ColorUtils.green,
+                                text: AppLocalizations.of(context).getLanguageText('upload_ipfs'),
+                                onClickListener: () async {
+                                  Navigator.of(context).pop();
+                                  var masterPassword = await StoreUtils.getMasterPassword();
+                                  var contentInfo = await convert2ContentInfo(masterPassword, item);
+                                  IPFSUtils.uploadIPFS(contentInfo.encrypted_data).then((resp) async {
+                                    // print("===>>> ${resp.data['Name']}");
+                                    item.content_id = resp.data['Name'];
+                                    var masterPassword = await StoreUtils.getMasterPassword();
+                                    var contentInfo = await convert2ContentInfo(masterPassword, item);
+                                    await getDataModel().upsertContentInfo(contentInfo, (id) {
+                                      setState(() {});
+                                    });
+                                  });
+                                },
+                              ),
                               ActionItem(
                                 icon: 'images/ic_delete.png',
-                                color: Colors.red,
+                                color: ColorUtils.red,
                                 text: AppLocalizations.of(context).getLanguageText('delete'),
                                 onClickListener: () async {
                                   Navigator.of(context).pop();

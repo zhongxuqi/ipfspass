@@ -308,6 +308,10 @@ class AppLocalizations {
       "en": 'Please Repeat Input New Master Password',
       "zh": '请重复输入新主密码',
     },
+    "upload_ipfs": {
+      "en": 'Upload IPFS',
+      "zh": '上传IPFS',
+    },
   };
 
   String getLanguageText(String textID) {

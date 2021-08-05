@@ -296,13 +296,13 @@ class FragmentContentState extends State<FragmentContent> {
                                         ));
                                       }
                                       Navigator.of(context).pop();
-                                      showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
                                       var masterPassword = await StoreUtils.getMasterPassword();
                                       for (var contentDetail in contentDetails) {
                                         var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
                                         getDataModel().updateContentInfo(contentInfo);
                                       }
                                       initContentList();
+                                      Navigator.of(context).pop();
                                     },
                                     keyName: AppLocalizations.of(context).getLanguageText('tag_name'),
                                     keyNameHint: AppLocalizations.of(context).getLanguageText('tag_name_input_hint'),
@@ -333,7 +333,6 @@ class FragmentContentState extends State<FragmentContent> {
                                     ));
                                   }
                                   Navigator.of(context).pop();
-                                  showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
                                   var masterPassword = await StoreUtils.getMasterPassword();
                                   for (var contentDetail in contentDetails) {
                                     var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
@@ -410,7 +409,6 @@ class FragmentContentState extends State<FragmentContent> {
                                     item.tags==null?<String>[]:item.tags.where((tagItem) => tagItem != tagName).toList(),
                                   ));
                                   Navigator.of(context).pop();
-                                  showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
                                   var masterPassword = await StoreUtils.getMasterPassword();
                                   for (var contentDetail in contentDetails) {
                                     var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
@@ -869,7 +867,6 @@ class ModalAddState extends State<ModalAdd> {
                           ));
                         }
                         Navigator.of(context).pop();
-                        showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
                         var masterPassword = await StoreUtils.getMasterPassword();
                         for (var contentDetail in contentDetails) {
                           var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);

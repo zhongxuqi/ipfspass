@@ -312,6 +312,14 @@ class AppLocalizations {
       "en": 'Upload IPFS',
       "zh": '上传IPFS',
     },
+    "auto_upload_ipfs": {
+      "en": "Auto upload IPFS",
+      "zh": "自动上传IPFS",
+    },
+    "uploading": {
+      "en": "Uploading...",
+      "zh": "上传中..."
+    },
   };
 
   String getLanguageText(String textID) {

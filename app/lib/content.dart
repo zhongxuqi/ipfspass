@@ -8,7 +8,7 @@ import 'utils/content.dart';
 import 'db/data.dart';
 import 'common/types.dart';
 import 'components/toast.dart';
-import 'dart:convert';
+import 'utils/ipfs.dart';
 import 'utils/store.dart';
 import 'components/AddKeyDialog.dart';
 import 'dart:math';
@@ -17,6 +17,7 @@ import 'dart:async';
 import "package:otp/otp.dart";
 import 'package:permission_handler/permission_handler.dart';
 import 'QrScanner.dart';
+import 'components/LoadingDialog.dart';
 
 class ContentPage extends StatefulWidget {
   final VoidCallback refreshCallback;
@@ -190,30 +191,6 @@ class ContentPageState extends State<ContentPage> {
     }
   }
 
-//  void onDeleteClick() {
-//    showAlertDialog(context, AppLocalizations.of(context).getLanguageText('affirm_delete_content'),
-//      callback: () {
-//        mypass.deleteContent(contentDetail).then((resp) async {
-//          Map<String, dynamic> registerResp = json.decode(resp.body);
-//          if (registerResp['errno'] != 0) {
-//            var errMsg = AppLocalizations.of(context).getLanguageText('net_error');
-//            switch (registerResp['errno']) {
-//              case 4000011:
-//                errMsg = AppLocalizations.of(context).getLanguageText('dup_account');
-//                break;
-//            }
-//            showErrorToast(errMsg);
-//            return;
-//          }
-//          var instance = getDataModel();
-//          await instance.deleteContentInfo(contentDetail.content_id);
-//          refreshCallback();
-//          Navigator.of(context).pop();
-//        });
-//      },
-//    );
-//  }
-
   void submit() async {
     if (isSubmitting) {
       return;
@@ -278,15 +255,39 @@ class ContentPageState extends State<ContentPage> {
     var contentDetail = ContentDetail(id, "", currTime, ContentExtra(), title, content, "blue", contentType, this.account, newExtra, tags);
     var masterPassword = await StoreUtils.getMasterPassword();
     var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
-    await getDataModel().upsertContentInfo(contentInfo, (id) {
+    await getDataModel().upsertContentInfo(contentInfo, (id) async {
       contentInfo.id = id;
       this.refreshCallback();
       this.id = contentInfo.id;
+      contentDetail.id = this.id;
       this.contentDetail = contentDetail;
       setEditable(false);
       renderContentDetail();
+      if (await StoreUtils.getAutoUploadIPFS()) {
+        uploadIPFS();
+      }
     });
     isSubmitting = false;
+
+  }
+
+  void uploadIPFS() async {
+    showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('upload_ipfs'));
+    var masterPassword = await StoreUtils.getMasterPassword();
+    var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
+    IPFSUtils.uploadIPFS(contentInfo.encrypted_data).then((resp) async {
+      contentDetail.content_id = resp.data['Name'];
+      var masterPassword = await StoreUtils.getMasterPassword();
+      var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
+      await getDataModel().upsertContentInfo(contentInfo, (id) {
+        setState(() {});
+      });
+      Navigator.of(context).pop();
+      this.refreshCallback();
+      setState(() {});
+    }).catchError(() {
+      Navigator.of(context).pop();
+    });
   }
 
   @override
@@ -461,6 +462,16 @@ class ContentPageState extends State<ContentPage> {
                   onClickListener: submit,
                 ),
               ]:<ContentTopBarAction>[
+                if (contentDetail.content_id == null || contentDetail.content_id.isEmpty) ContentTopBarAction(
+                  text: Icon(
+                    IconFonts.upload,
+                    color: ColorUtils.orange,
+                    size: 25.0,
+                  ),
+                  onClickListener: () {
+                    uploadIPFS();
+                  },
+                ),
                 ContentTopBarAction(
                   text: Text(
                     AppLocalizations.of(context).getLanguageText('edit'),
@@ -476,16 +487,6 @@ class ContentPageState extends State<ContentPage> {
                     });
                   },
                 ),
-//                ContentTopBarAction(
-//                  text: Text(
-//                    AppLocalizations.of(context).getLanguageText('delete'),
-//                    style: TextStyle(
-//                      color: Colors.red[800],
-//                      fontSize: 15.0,
-//                    ),
-//                  ),
-//                  onClickListener: onDeleteClick,
-//                ),
               ],
             ),
             Container(

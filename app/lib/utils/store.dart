@@ -78,4 +78,16 @@ class StoreUtils {
     if (t == null) return 30;
     return t;
   }
+
+  static const AutoUploadIPFSKey = "auto_upload_ipfs";
+  static setAutoUploadIPFS(bool enable) async {
+    var sharedPreference = await SharedPreferences.getInstance();
+    sharedPreference.setBool(AutoUploadIPFSKey, enable);
+  }
+  static Future<bool> getAutoUploadIPFS() async {
+    var sharedPreference = await SharedPreferences.getInstance();
+    var v = sharedPreference.getBool(AutoUploadIPFSKey);
+    if (v == null) return true;
+    return v;
+  }
 }

@@ -23,4 +23,5 @@ class IconFonts {
   static const IconData add = IconData(0xe6fa, fontFamily: 'iconfont');
   static const IconData online = IconData(0xe65e, fontFamily: 'iconfont');
   static const IconData offline = IconData(0xe64d, fontFamily: 'iconfont');
+  static const IconData upload = IconData(0xe8e9, fontFamily: 'iconfont');
 }

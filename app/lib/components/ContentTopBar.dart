@@ -5,7 +5,7 @@ import '../common/types.dart';
 import '../utils/localization.dart';
 
 class ContentTopBarAction {
-  final Text text;
+  final Widget text;
   final VoidCallback onClickListener;
 
   ContentTopBarAction({@required this.text, @required this.onClickListener});

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:app/utils/content.dart';
 import 'package:app/utils/iconfonts.dart';
 import 'package:app/utils/store.dart';
@@ -429,7 +428,6 @@ class FragmentContentState extends State<FragmentContent> {
                                   var masterPassword = await StoreUtils.getMasterPassword();
                                   var contentInfo = await convert2ContentInfo(masterPassword, item);
                                   IPFSUtils.uploadIPFS(contentInfo.encrypted_data).then((resp) async {
-                                    // print("===>>> ${resp.data['Name']}");
                                     item.content_id = resp.data['Name'];
                                     var masterPassword = await StoreUtils.getMasterPassword();
                                     var contentInfo = await convert2ContentInfo(masterPassword, item);

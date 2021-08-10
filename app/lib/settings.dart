@@ -16,6 +16,7 @@ class SettingsPageState extends State<SettingsPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   int lockTimeout = 30;
   bool autoUploadIPFS = false;
+  bool autoBackupContent = false;
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class SettingsPageState extends State<SettingsPage> {
   void initData() async {
     lockTimeout = await StoreUtils.getLockScreen();
     autoUploadIPFS = await StoreUtils.getAutoUploadIPFS();
+    autoBackupContent = await StoreUtils.getAutoBackupContent();
     setState(() {});
   }
 
@@ -122,6 +124,39 @@ class SettingsPageState extends State<SettingsPage> {
                             onChanged: (newValue) async {
                               await StoreUtils.setAutoUploadIPFS(newValue);
                               autoUploadIPFS = newValue;
+                              setState(() {});
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Card(
+                    elevation: 1.0,
+                    color: ColorUtils.themeLightColor,
+                    margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              AppLocalizations.of(context).getLanguageText('auto_backup_content'),
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Switch(
+                            activeColor: ColorUtils.green,
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            value: autoBackupContent,
+                            onChanged: (newValue) async {
+                              await StoreUtils.setAutoBackupContent(newValue);
+                              autoBackupContent = newValue;
                               setState(() {});
                             },
                           ),

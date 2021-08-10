@@ -429,8 +429,13 @@ class FragmentContentState extends State<FragmentContent> {
                                     item.content_id = resp.data['Name'];
                                     var masterPassword = await StoreUtils.getMasterPassword();
                                     var contentInfo = await convert2ContentInfo(masterPassword, item);
-                                    await getDataModel().upsertContentInfo(contentInfo, (id) {
+                                    await getDataModel().upsertContentInfo(contentInfo, (id) async {
                                       setState(() {});
+
+                                      // 判断是否需要自动同步
+                                      if (await StoreUtils.getAutoBackupContent()) {
+                                        backupContent();
+                                      }
                                     });
                                   });
                                 },

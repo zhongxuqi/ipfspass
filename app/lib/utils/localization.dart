@@ -320,6 +320,10 @@ class AppLocalizations {
       "en": "Uploading...",
       "zh": "上传中..."
     },
+    "auto_backup_content": {
+      "en": "Auto backup content",
+      "zh": "自动备份内容"
+    },
   };
 
   String getLanguageText(String textID) {

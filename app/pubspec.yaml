@@ -38,6 +38,8 @@ dependencies:
   flutter_qr_reader: 1.0.3
   numberpicker: ^2.1.1
   dio: ^4.0.0
+  share: ^2.0.4
+  path_provider: ^2.0.2
 
 dev_dependencies:
   flutter_test:

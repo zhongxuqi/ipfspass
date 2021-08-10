@@ -1,7 +1,13 @@
+import 'package:app/utils/store.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart' as path;
 import '../db/data.dart';
 import 'dart:async';
 import 'encrypt.dart' as encrypt;
 import 'dart:convert';
+import 'package:share/share.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'dart:io';
 
 class ContentDetail {
   int id;
@@ -63,4 +69,41 @@ Future<List<ContentDetail>> listContentDetail(masterPassword, int type) async {
     contentDetailList.add(contentDetail);
   }
   return contentDetailList;
+}
+
+class ContentBackup {
+  final String encryptedMasterPassword;
+  final List<ContentInfo> contents;
+
+  Map<String, dynamic> toMap() {
+    var contentMaps = <Map<String, dynamic>>[];
+    for (var contentItem in contents) {
+      contentMaps.add({
+        'content_id': contentItem.content_id,
+        'encrypted_data': contentItem.encrypted_data,
+        'extra': contentItem.extra.toJSON(),
+      });
+    }
+    return {
+      "encrypted_master_password": encryptedMasterPassword,
+      'contents': contentMaps,
+    };
+  }
+
+  ContentBackup({@required this.encryptedMasterPassword, @required this.contents});
+}
+
+void backupContent() async {
+  var encryptedMasterPassword = await StoreUtils.getRawMasterPassword();
+  var instance = getDataModel();
+  var contents = await instance.listContentInfo();
+  var contentBackup = ContentBackup(encryptedMasterPassword: encryptedMasterPassword, contents: contents);
+  var filesPath = path.join((await path_provider.getApplicationDocumentsDirectory()).path, 'ipfspass_backup.json');
+  var file = File(filesPath);
+  if (file.existsSync()) {
+    file.deleteSync(recursive: true);
+  }
+  file.createSync(recursive: true);
+  file.writeAsStringSync(json.encode(contentBackup.toMap()));
+  Share.shareFiles(<String>[filesPath], mimeTypes: <String>["application/json"]);
 }

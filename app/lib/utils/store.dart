@@ -6,6 +6,20 @@ class StoreUtils {
   static const String EasyPass = "easypass";
   static const String MasterPasswordKey = "master_password";
 
+  static setRawMasterPassword(String encryptedMasterPassword) async {
+    var sharedPreference = await SharedPreferences.getInstance();
+    sharedPreference.setString(MasterPasswordKey, encryptedMasterPassword);
+  }
+
+  static getRawMasterPassword() async {
+    var sharedPreference = await SharedPreferences.getInstance();
+    var encryptedMasterPassword = sharedPreference.getString(MasterPasswordKey);
+    if (encryptedMasterPassword == null) {
+      return "";
+    }
+    return encryptedMasterPassword;
+  }
+
   static setMasterPassword(String masterPassword) async {
     var sharedPreference = await SharedPreferences.getInstance();
     var encryptedMasterPassword = await encrypt.encryptData(EasyPass, masterPassword);
@@ -87,6 +101,18 @@ class StoreUtils {
   static Future<bool> getAutoUploadIPFS() async {
     var sharedPreference = await SharedPreferences.getInstance();
     var v = sharedPreference.getBool(AutoUploadIPFSKey);
+    if (v == null) return true;
+    return v;
+  }
+
+  static const AutoBackupContentKey = "auto_backup_content";
+  static setAutoBackupContent(bool enable) async {
+    var sharedPreference = await SharedPreferences.getInstance();
+    sharedPreference.setBool(AutoBackupContentKey, enable);
+  }
+  static Future<bool> getAutoBackupContent() async {
+    var sharedPreference = await SharedPreferences.getInstance();
+    var v = sharedPreference.getBool(AutoBackupContentKey);
     if (v == null) return true;
     return v;
   }

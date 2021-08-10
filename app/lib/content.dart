@@ -268,7 +268,6 @@ class ContentPageState extends State<ContentPage> {
       }
     });
     isSubmitting = false;
-
   }
 
   void uploadIPFS() async {
@@ -285,6 +284,11 @@ class ContentPageState extends State<ContentPage> {
       Navigator.of(context).pop();
       this.refreshCallback();
       setState(() {});
+
+      // 判断是否需要自动同步
+      if (await StoreUtils.getAutoBackupContent()) {
+        backupContent();
+      }
     }).catchError(() {
       Navigator.of(context).pop();
     });

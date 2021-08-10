@@ -466,7 +466,7 @@ class ContentPageState extends State<ContentPage> {
                   onClickListener: submit,
                 ),
               ]:<ContentTopBarAction>[
-                if (contentDetail.content_id == null || contentDetail.content_id.isEmpty) ContentTopBarAction(
+                if (contentDetail != null && (contentDetail.content_id == null || contentDetail.content_id.isEmpty)) ContentTopBarAction(
                   text: Icon(
                     IconFonts.upload,
                     color: ColorUtils.orange,

@@ -8,6 +8,8 @@ import 'utils/encrypt.dart' as encrypt;
 import './components/LoadingDialog.dart';
 import 'components/topbar.dart';
 import 'components/toast.dart';
+import 'utils/ipfs.dart';
+import 'utils/content.dart';
 
 class ModifyMasterPasswordPage extends StatefulWidget {
   @override
@@ -69,13 +71,25 @@ class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
     for (var contentInfo in contentInfos) {
       var decryptedData = await encrypt.decryptData(modifyMasterPasswordOldCtl.text, contentInfo.encrypted_data);
       var encryptedData = await encrypt.encryptData(modifyMasterPasswordNewCtl.text, decryptedData);
-      newContentInfos.add(ContentInfo(contentInfo.id, contentInfo.content_id, encryptedData, contentInfo.extra, currTime));
+      newContentInfos.add(ContentInfo(contentInfo.id, "", encryptedData, contentInfo.extra, currTime));
     }
     showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
+    var autoUploadIPFS = await StoreUtils.getAutoUploadIPFS();
     for (var newContentInfo in newContentInfos) {
+      if (autoUploadIPFS) {
+        var resp = await IPFSUtils.uploadIPFS(newContentInfo.encrypted_data);
+        newContentInfo.content_id = resp.data['Name'];
+        await getDataModel().upsertContentInfo(newContentInfo, (id) {});
+      }
       await dbIns.updateContentInfo(newContentInfo);
     }
     await StoreUtils.setMasterPassword(modifyMasterPasswordNewCtl.text);
+
+    // 判断是否需要自动同步
+    if (autoUploadIPFS && await StoreUtils.getAutoBackupContent()) {
+      backupContent();
+    }
+
     Navigator.of(context).pop();
     Navigator.of(context).pop();
   }

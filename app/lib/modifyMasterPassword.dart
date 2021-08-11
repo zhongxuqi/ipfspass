@@ -18,6 +18,7 @@ class ModifyMasterPasswordPage extends StatefulWidget {
 
 class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<_ProcessingDialogState> _processingDialogKey = new GlobalKey<_ProcessingDialogState>();
 
   var modifyMasterPasswordOldCtl = TextEditingController();
   var modifyMasterPasswordOldErr = "";
@@ -73,8 +74,16 @@ class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
       var encryptedData = await encrypt.encryptData(modifyMasterPasswordNewCtl.text, decryptedData);
       newContentInfos.add(ContentInfo(contentInfo.id, "", encryptedData, contentInfo.extra, currTime));
     }
-    showLoadingDialog(context, AppLocalizations.of(context).getLanguageText('processing'));
+    var finishCount = 0;
+    var text = "${AppLocalizations.of(context).getLanguageText('processing')} ($finishCount/${newContentInfos.length})";
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ProcessingDialog(key: _processingDialogKey, text: text);
+        },
+    );
     var autoUploadIPFS = await StoreUtils.getAutoUploadIPFS();
+
     for (var newContentInfo in newContentInfos) {
       if (autoUploadIPFS) {
         var resp = await IPFSUtils.uploadIPFS(newContentInfo.encrypted_data);
@@ -82,12 +91,17 @@ class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
         await getDataModel().upsertContentInfo(newContentInfo, (id) {});
       }
       await dbIns.updateContentInfo(newContentInfo);
+      finishCount++;
+      text = "${AppLocalizations.of(context).getLanguageText('processing')} ($finishCount/${newContentInfos.length})";
+      if (_processingDialogKey.currentState != null) {
+        _processingDialogKey.currentState.setText(text);
+      }
     }
     await StoreUtils.setMasterPassword(modifyMasterPasswordNewCtl.text);
 
     // 判断是否需要自动同步
     if (autoUploadIPFS && await StoreUtils.getAutoBackupContent()) {
-      backupContent();
+      backupContent(context);
     }
 
     Navigator.of(context).pop();
@@ -365,6 +379,79 @@ class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ProcessingDialog extends StatefulWidget {
+  final String text;
+
+  ProcessingDialog({Key key, @required this.text}):super(key: key);
+
+  @override
+  State createState() {
+    return _ProcessingDialogState();
+  }
+}
+
+class _ProcessingDialogState extends State<ProcessingDialog> {
+  String text;
+
+  @override
+  void initState() {
+    super.initState();
+    text = widget.text;
+  }
+
+  void setText(String text) {
+    setState(() {
+      this.text = text;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      shadowColor: Colors.transparent,
+      color: Colors.transparent,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(25.0),
+                decoration: BoxDecoration(
+                  color: Color(0xbb000000),
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(bottom: 15.0),
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        strokeWidth: 2.0,
+                      ),
+                    ),
+                    Text(
+                      text,
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

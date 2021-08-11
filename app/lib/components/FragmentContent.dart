@@ -434,7 +434,7 @@ class FragmentContentState extends State<FragmentContent> {
 
                                       // 判断是否需要自动同步
                                       if (await StoreUtils.getAutoBackupContent()) {
-                                        backupContent();
+                                        backupContent(context);
                                       }
                                     });
                                   });

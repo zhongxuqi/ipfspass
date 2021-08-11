@@ -287,9 +287,9 @@ class ContentPageState extends State<ContentPage> {
 
       // 判断是否需要自动同步
       if (await StoreUtils.getAutoBackupContent()) {
-        backupContent();
+        backupContent(context);
       }
-    }).catchError(() {
+    }).catchError((e) {
       Navigator.of(context).pop();
     });
   }

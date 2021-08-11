@@ -8,6 +8,8 @@ import 'dart:convert';
 import 'package:share/share.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'dart:io';
+import '../utils/localization.dart';
+import '../components/AlertDialog.dart';
 
 class ContentDetail {
   int id;
@@ -93,17 +95,19 @@ class ContentBackup {
   ContentBackup({@required this.encryptedMasterPassword, @required this.contents});
 }
 
-void backupContent() async {
-  var encryptedMasterPassword = await StoreUtils.getRawMasterPassword();
-  var instance = getDataModel();
-  var contents = await instance.listContentInfo();
-  var contentBackup = ContentBackup(encryptedMasterPassword: encryptedMasterPassword, contents: contents);
-  var filesPath = path.join((await path_provider.getApplicationDocumentsDirectory()).path, 'ipfspass_backup.json');
-  var file = File(filesPath);
-  if (file.existsSync()) {
+void backupContent(BuildContext ctx) async {
+  showAlertDialog(ctx, AppLocalizations.of(ctx).getLanguageText('backup_content_alert'), callback: () async {
+    var encryptedMasterPassword = await StoreUtils.getRawMasterPassword();
+    var instance = getDataModel();
+    var contents = await instance.listContentInfo();
+    var contentBackup = ContentBackup(encryptedMasterPassword: encryptedMasterPassword, contents: contents);
+    var filesPath = path.join((await path_provider.getApplicationDocumentsDirectory()).path, 'ipfspass_backup.json');
+    var file = File(filesPath);
+    if (file.existsSync()) {
     file.deleteSync(recursive: true);
-  }
-  file.createSync(recursive: true);
-  file.writeAsStringSync(json.encode(contentBackup.toMap()));
-  Share.shareFiles(<String>[filesPath], mimeTypes: <String>["application/json"]);
+    }
+    file.createSync(recursive: true);
+    file.writeAsStringSync(json.encode(contentBackup.toMap()));
+    Share.shareFiles(<String>[filesPath], mimeTypes: <String>["application/json"]);
+  });
 }

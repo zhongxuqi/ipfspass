@@ -324,6 +324,10 @@ class AppLocalizations {
       "en": "Auto backup content",
       "zh": "自动备份内容"
     },
+    "backup_content_alert": {
+      "en": "Whether to backup content",
+      "zh": "是否备份内容"
+    },
   };
 
   String getLanguageText(String textID) {

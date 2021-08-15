@@ -25,6 +25,12 @@ class AuthPage extends StatefulWidget {
 class AuthPageState extends State<AuthPage> {
   var masterPasswordCtl = TextEditingController();
 
+  @override
+    void initState() {
+      super.initState();
+      _authenticate();
+    }
+
   void unlock() {
     if (widget.isLock) {
       Navigator.of(context).pop();
@@ -49,6 +55,7 @@ class AuthPageState extends State<AuthPage> {
         biometricOnly: true);
     } on PlatformException catch (e) {
       print(e);
+      return;
     }
     if (!mounted) return;
 

@@ -311,20 +311,20 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                             },
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                          child: DrawerButton(
-                            text: AppLocalizations.of(context).getLanguageText('secret_message'),
-                            iconData: IconFonts.hkmessage,
-                            isActive: _currentPageIndex == 1,
-                            onClick: () {
-                              setState(() {
-                                _currentPageIndex = 1;
-                                Navigator.pop(context);
-                              });
-                            },
-                          ),
-                        ),
+                        // Container(
+                        //   margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                        //   child: DrawerButton(
+                        //     text: AppLocalizations.of(context).getLanguageText('secret_message'),
+                        //     iconData: IconFonts.hkmessage,
+                        //     isActive: _currentPageIndex == 1,
+                        //     onClick: () {
+                        //       setState(() {
+                        //         _currentPageIndex = 1;
+                        //         Navigator.pop(context);
+                        //       });
+                        //     },
+                        //   ),
+                        // ),
                         Container(
                           width: 200.0,
                           margin: EdgeInsets.only(top: 10.0, bottom: 5),

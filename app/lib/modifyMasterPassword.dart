@@ -5,7 +5,6 @@ import 'db/data.dart';
 import 'utils/colors.dart';
 import 'utils/store.dart';
 import 'utils/encrypt.dart' as encrypt;
-import './components/LoadingDialog.dart';
 import 'components/topbar.dart';
 import 'components/toast.dart';
 import 'utils/ipfs.dart';
@@ -18,7 +17,6 @@ class ModifyMasterPasswordPage extends StatefulWidget {
 
 class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final GlobalKey<_ProcessingDialogState> _processingDialogKey = new GlobalKey<_ProcessingDialogState>();
 
   var modifyMasterPasswordOldCtl = TextEditingController();
   var modifyMasterPasswordOldErr = "";
@@ -65,6 +63,7 @@ class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
       return;
     }
 
+    final _processingDialogKey = new GlobalKey<_ProcessingDialogState>();
     var dbIns = getDataModel();
     var contentInfos = await dbIns.listContentInfo();
     var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
@@ -85,27 +84,26 @@ class ModifyMasterPasswordPageState extends State<ModifyMasterPasswordPage> {
     var autoUploadIPFS = await StoreUtils.getAutoUploadIPFS();
 
     for (var newContentInfo in newContentInfos) {
-      if (autoUploadIPFS) {
-        var resp = await IPFSUtils.uploadIPFS(newContentInfo.encrypted_data);
-        newContentInfo.content_id = resp.data['Name'];
-        await getDataModel().upsertContentInfo(newContentInfo, (id) {});
-      }
       await dbIns.updateContentInfo(newContentInfo);
-      finishCount++;
-      text = "${AppLocalizations.of(context).getLanguageText('processing')} ($finishCount/${newContentInfos.length})";
-      if (_processingDialogKey.currentState != null) {
-        _processingDialogKey.currentState.setText(text);
-      }
     }
     await StoreUtils.setMasterPassword(modifyMasterPasswordNewCtl.text);
 
     // 判断是否需要自动同步
-    if (autoUploadIPFS && await StoreUtils.getAutoBackupContent()) {
-      backupContent(context);
+    if (autoUploadIPFS) {
+      for (var newContentInfo in newContentInfos) {
+        var resp = await IPFSUtils.uploadIPFS(newContentInfo.encrypted_data);
+        newContentInfo.content_id = resp.data['Name'];
+        await dbIns.updateContentInfo(newContentInfo);
+        finishCount++;
+        text = "${AppLocalizations.of(context).getLanguageText('processing')} ($finishCount/${newContentInfos.length})";
+        if (_processingDialogKey.currentState != null) {
+          _processingDialogKey.currentState.setText(text);
+        }
+      }
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+      if (await StoreUtils.getAutoBackupContent()) backupContent(context);
     }
-
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
   }
 
   @override

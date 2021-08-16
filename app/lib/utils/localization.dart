@@ -328,6 +328,10 @@ class AppLocalizations {
       "en": "Whether to backup content",
       "zh": "是否备份内容"
     },
+    "recover_data_from_backup_file": {
+      "en": "Recover data from backup file",
+      "zh": "从备份文件恢复数据"
+    },
   };
 
   String getLanguageText(String textID) {

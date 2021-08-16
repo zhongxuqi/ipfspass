@@ -93,6 +93,17 @@ class ContentBackup {
   }
 
   ContentBackup({@required this.encryptedMasterPassword, @required this.contents});
+
+  static ContentBackup fromMap(Map<String, dynamic> data) {
+    var encryptedMasterPassword = data['encrypted_master_password'];
+    var contents = <ContentInfo>[];
+    if (data['contents'] != null) {
+      for (var item in data['contents']) {
+        contents.add(ContentInfo(null, item['content_id'], item['encrypted_data'], ContentExtra(), null));
+      }
+    }
+    return ContentBackup(encryptedMasterPassword: encryptedMasterPassword, contents: contents);
+  }
 }
 
 void backupContent(BuildContext ctx) async {
@@ -104,7 +115,7 @@ void backupContent(BuildContext ctx) async {
     var filesPath = path.join((await path_provider.getApplicationDocumentsDirectory()).path, 'ipfspass_backup.json');
     var file = File(filesPath);
     if (file.existsSync()) {
-    file.deleteSync(recursive: true);
+      file.deleteSync(recursive: true);
     }
     file.createSync(recursive: true);
     file.writeAsStringSync(json.encode(contentBackup.toMap()));

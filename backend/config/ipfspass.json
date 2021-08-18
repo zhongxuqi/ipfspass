@@ -1,6 +1,5 @@
 {
     "addr": "0.0.0.0:9990",
-    "ipfs_path": "ipfs-shell",
     "read_gateway": ["https://ipfs.itargo.io", "https://ipfs.io"],
     "write_gateway": ["https://infura-ipfs.io:5001", "https://ipfs.infura.io:5001"]
 }

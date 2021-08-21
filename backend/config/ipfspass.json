@@ -1,5 +1,5 @@
 {
     "addr": "0.0.0.0:9990",
-    "read_gateway": ["https://ipfs.itargo.io", "https://ipfs.io"],
+    "read_gateway": ["https://ipfs.io/ipfs/<cidv1>"],
     "write_gateway": ["https://infura-ipfs.io:5001", "https://ipfs.infura.io:5001"]
 }

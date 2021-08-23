@@ -24,4 +24,8 @@ class IconFonts {
   static const IconData online = IconData(0xe65e, fontFamily: 'iconfont');
   static const IconData offline = IconData(0xe64d, fontFamily: 'iconfont');
   static const IconData upload = IconData(0xe8e9, fontFamily: 'iconfont');
+  static const IconData eye = IconData(0xe775, fontFamily: 'iconfont');
+  static const IconData eyeslash = IconData(0xe6df, fontFamily: 'iconfont');
+  static const IconData copy = IconData(0xf289, fontFamily: 'iconfont');
+  static const IconData arrow_down = IconData(0xe644, fontFamily: 'iconfont');
 }

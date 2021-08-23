@@ -252,7 +252,7 @@ class ContentPageState extends State<ContentPage> {
     if (tagName != null && tagName != '' && !tags.contains(tagName)) {
       tags.add(tagName);
     }
-    var contentDetail = ContentDetail(id, "", currTime, ContentExtra(), title, content, "blue", contentType, this.account, newExtra, tags);
+    var contentDetail = ContentDetail(id, "", currTime, ContentExtra(), title, content, contentType, this.account, newExtra, tags);
     var masterPassword = await StoreUtils.getMasterPassword();
     var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
     await getDataModel().upsertContentInfo(contentInfo, (id) async {

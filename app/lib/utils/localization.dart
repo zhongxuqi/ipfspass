@@ -332,6 +332,62 @@ class AppLocalizations {
       "en": "Recover data from backup file",
       "zh": "从备份文件恢复数据"
     },
+    "content_type": {
+      "en": "Content Type",
+      "zh": "内容类型"
+    },
+    "account_optional": {
+      "en": "Account (Optional)",
+      "zh": "账户（选填）"
+    },
+    "gonext": {
+      "en": "Go Next",
+      "zh": "下一步"
+    },
+    "goback": {
+      "en": "Go Back",
+      "zh": "上一步"
+    },
+    "temp_password": {
+      "en": "Temporary Password",
+      "zh": "临时加密密码"
+    },
+    "input_temp_pass_hint": {
+      "en": "Please input temporary password",
+      "zh": "请输入临时密码"
+    },
+    "message_hint_word": {
+      "en": "Hint Word",
+      "zh": "提示语"
+    },
+    "input_message_hint_word_hint": {
+      "en": "Please input hint word",
+      "zh": "请输入提示语"
+    },
+    "content_title": {
+      "en": "Content Title",
+      "zh": "内容标题"
+    },
+    "pack": {
+      "en": "Pack",
+      "zh": "打包"
+    },
+    "pack_result": {
+      "en": "Pack Result",
+      "zh": "打包结果"
+    },
+    "copy_ipfs": {
+      "en": "Copy IPFS Content ID",
+      "zh": "拷贝IPFS内容ID"
+    },
+    "send_exist_password": {
+      "en": "Send exist passord",
+      "zh": "发送现有密码",
+    },
+    "send_new_password": {
+      "en": "Send new passord",
+      "zh": "发送新密码",
+    },
   };
 
   String getLanguageText(String textID) {

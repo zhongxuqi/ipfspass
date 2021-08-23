@@ -19,13 +19,12 @@ class ContentDetail {
 
   String title;
   String content;
-  String color;
   int type;
   String account;
   Map<String, dynamic> extra;
   List<String> tags;
 
-  ContentDetail(this.id, this.content_id, this.last_modify_time, this.contentExtra, this.title, this.content, this.color, this.type, this.account, this.extra, this.tags);
+  ContentDetail(this.id, this.content_id, this.last_modify_time, this.contentExtra, this.title, this.content, this.type, this.account, this.extra, this.tags);
 }
 
 Future<ContentInfo> convert2ContentInfo(String masterPassword, ContentDetail contentDetail) async {
@@ -33,7 +32,6 @@ Future<ContentInfo> convert2ContentInfo(String masterPassword, ContentDetail con
     'title': contentDetail.title,
     'content': contentDetail.content,
     'type': contentDetail.type,
-    'color': contentDetail.color,
     'account': contentDetail.account,
     'extra': contentDetail.extra,
     'tags': contentDetail.tags,
@@ -54,7 +52,7 @@ Future<ContentDetail> convert2ContentDetail(String masterPassword, ContentInfo c
     }
   }
   return ContentDetail(contentInfo.id, contentInfo.content_id, contentInfo.last_modify_time, contentInfo.extra,
-    decryptedData['title'], decryptedData['content'], decryptedData['color'], decryptedData['type'], decryptedData['account'],
+    decryptedData['title'], decryptedData['content'], decryptedData['type'], decryptedData['account'],
       decryptedData['extra']==null?Map<String, dynamic>():decryptedData['extra'], tagList);
 }
 

@@ -120,3 +120,24 @@ void backupContent(BuildContext ctx) async {
     Share.shareFiles(<String>[filesPath], mimeTypes: <String>["application/json"]);
   });
 }
+
+class ContentMessage {
+  final String hint;
+  final String passwordHash;
+  final String encryptedData;
+
+  ContentMessage({@required this.hint, @required this.passwordHash, @required this.encryptedData});
+
+  String toJSON() {
+    return json.encode({
+      "hint": hint,
+      "password_hash": passwordHash,
+      "encrypted_data": encryptedData,
+    });
+  }
+
+  static ContentMessage fromJSON(String jsonStr) {
+    var dataMap = json.decode(jsonStr);
+    return ContentMessage(hint: dataMap["hint"], passwordHash: dataMap["password_hash"], encryptedData: dataMap["encrypted_data"]);
+  }
+}

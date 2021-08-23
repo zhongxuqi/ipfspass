@@ -276,7 +276,6 @@ class ContentPageState extends State<ContentPage> {
     var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
     IPFSUtils.uploadIPFS(contentInfo.encrypted_data).then((resp) async {
       contentDetail.content_id = resp.data['Name'];
-      var masterPassword = await StoreUtils.getMasterPassword();
       var contentInfo = await convert2ContentInfo(masterPassword, contentDetail);
       await getDataModel().upsertContentInfo(contentInfo, (id) {
         setState(() {});

@@ -10,6 +10,9 @@ import 'FormInput.dart';
 import 'AddKeyDialog.dart';
 import 'Toast.dart';
 import '../db/data.dart';
+import '../utils/ipfs.dart';
+import 'package:flutter/services.dart';
+import '../utils/encrypt.dart' as encrypt;
 
 const ModeExist = 'exist';
 const ModeNew = 'new';
@@ -122,7 +125,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
   final tempPasswordCtl = TextEditingController();
   String tempPasswordErr = '';
   final hintWordCtl = TextEditingController();
-  String link = '';
+  String contentID = '';
 
   List<ContentType> contentTypes;
 
@@ -889,7 +892,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   ),
                   onTap: () async {
                     if (this.step >= 3) return;
-                    this.step = 4;
+                    this.step = 3;
                     setState(() {});
                     var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
                     var contentInfo = await convert2ContentInfo(tempPasswordCtl.text,
@@ -899,7 +902,16 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                       setState(() {});
                       return;
                     }
-                    // todo 上传IPFS
+                    var contentMessage = ContentMessage(hint: hintWordCtl.text, passwordHash: await encrypt.sha256(tempPasswordCtl.text), encryptedData: contentInfo.encrypted_data);
+                    IPFSUtils.uploadIPFS(contentMessage.toJSON()).then((resp) async {
+                      this.contentID = resp.data['Name'];
+                      this.step = 4;
+                      setState(() {});
+                    }).catchError((e) {
+                      showErrorToast(AppLocalizations.of(context).getLanguageText('upload_ipfs_fail'));
+                      this.step = 2;
+                      setState(() {});
+                    });
                   },
                 ),
               ),
@@ -963,7 +975,8 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   ],
                 ),
                 onTap: () {
-                  // todo 拷贝content id
+                  Clipboard.setData(ClipboardData(text: this.contentID));
+                  showSuccessToast(AppLocalizations.of(context).getLanguageText('copied'));
                 }
               ),
             ),

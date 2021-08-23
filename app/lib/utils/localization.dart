@@ -392,6 +392,10 @@ class AppLocalizations {
       "en": "Send new passord",
       "zh": "发送新密码",
     },
+    "upload_ipfs_fail": {
+      "en": "Upload IPFS fail",
+      "zh": "上传IPFS失败",
+    },
   };
 
   String getLanguageText(String textID) {

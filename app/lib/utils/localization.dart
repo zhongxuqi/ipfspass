@@ -396,6 +396,22 @@ class AppLocalizations {
       "en": "Upload IPFS fail",
       "zh": "上传IPFS失败",
     },
+    "import_from_ipfs": {
+      "en": "Import from IPFS",
+      "zh": "从IPFS导入数据",
+    },
+    "ipfs_content_id": {
+      "en": "IPFS Content ID",
+      "zh": "IPFS内容ID",
+    },
+    "ipfs_content_id_hint": {
+      "en": "Please input IPFS content ID",
+      "zh": "请输入IPFS内容ID",
+    },
+    "download_ipfs_fail": {
+      "en": "Download IPFS Content fail",
+      "zh": "下载IPFS内容失败",
+    },
   };
 
   String getLanguageText(String textID) {

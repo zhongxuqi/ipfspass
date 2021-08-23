@@ -17,6 +17,7 @@ import 'utils/colors.dart';
 import 'utils/iconfonts.dart';
 import 'welcome.dart';
 import 'common/types.dart' as types;
+import 'components/ImportFromIPFSDialog.dart';
 
 void main() {
   runApp(MyApp());
@@ -340,6 +341,22 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                               color: ColorUtils.white,
                               fontWeight: FontWeight.bold,
                             ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('import_from_ipfs'),
+                            iconData: IconFonts.download,
+                            isActive: false,
+                            onClick: () {
+                              Navigator.of(context).pop();
+                              showImportFromIPFSDialog(context, callback: () {
+                                if (_fragmentContentKey != null && _fragmentContentKey.currentState != null) {
+                                  _fragmentContentKey.currentState.initContentList();
+                                }
+                              });
+                            },
                           ),
                         ),
                         Container(

@@ -539,7 +539,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                       child: Text(
                         AppLocalizations.of(context).getLanguageText('gonext'),
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: ColorUtils.blue,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

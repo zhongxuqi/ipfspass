@@ -372,6 +372,10 @@ class AppLocalizations {
       "en": "Pack",
       "zh": "打包"
     },
+    "packing": {
+      "en": "Packing...",
+      "zh": "打包中..."
+    },
     "pack_result": {
       "en": "Pack Result",
       "zh": "打包结果"

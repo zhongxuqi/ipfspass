@@ -213,7 +213,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
           Container(
             margin: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: ColorUtils.themeLightColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(5.0),
               ),
@@ -643,7 +643,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                     child: Text(
                       AppLocalizations.of(context).getLanguageText('goback'),
                       style: TextStyle(
-                        color: Colors.grey,
+                        color: ColorUtils.textColorGrey,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -663,7 +663,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                     child: Text(
                       AppLocalizations.of(context).getLanguageText('gonext'),
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: ColorUtils.blue,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -714,7 +714,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   child: Text(
                     AppLocalizations.of(context).getLanguageText('content_type'),
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: ColorUtils.textColorGrey,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -728,7 +728,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   child: Text(
                     contentTypeDesc,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: ColorUtils.textColor,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -751,7 +751,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   child: Text(
                     AppLocalizations.of(context).getLanguageText('content_title'),
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: ColorUtils.textColorGrey,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -765,7 +765,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   child: Text(
                     selectedContent.title,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: ColorUtils.textColor,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -788,7 +788,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   child: Text(
                     AppLocalizations.of(context).getLanguageText('temp_password'),
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: ColorUtils.textColorGrey,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -802,7 +802,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   child: Text(
                     tempPasswordCtl.text,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: ColorUtils.textColor,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -825,7 +825,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   child: Text(
                     AppLocalizations.of(context).getLanguageText('message_hint_word'),
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: ColorUtils.textColorGrey,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -839,7 +839,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                   child: Text(
                     hintWordCtl.text,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: ColorUtils.textColor,
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -862,7 +862,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                     child: Text(
                       AppLocalizations.of(context).getLanguageText('goback'),
                       style: TextStyle(
-                        color: Colors.grey,
+                        color: ColorUtils.textColorGrey,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -882,14 +882,14 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                     child: Text(
                       AppLocalizations.of(context).getLanguageText('pack'),
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: ColorUtils.blue,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   onTap: () async {
                     if (this.step >= 3) return;
-                    this.step = 3;
+                    this.step = 4;
                     setState(() {});
                     var currTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
                     var contentInfo = await convert2ContentInfo(tempPasswordCtl.text,
@@ -913,7 +913,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
           margin: EdgeInsets.only(bottom: 15.0),
           alignment: Alignment.center,
           child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+            valueColor: AlwaysStoppedAnimation<Color>(ColorUtils.white),
             strokeWidth: 2.0,
           ),
         ),
@@ -924,12 +924,11 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
               AppLocalizations.of(context).getLanguageText('packing'),
               style: TextStyle(
                 fontSize: 15.0,
-                color: Colors.black,
+                color: ColorUtils.white,
               ),
             ),
           ],
         ),
-
       ];
     } else if (this.step == 4) {
       body = <Widget>[
@@ -938,7 +937,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
           child: Text(
             AppLocalizations.of(context).getLanguageText('pack_result'),
             style: TextStyle(
-              color: Colors.black,
+              color: ColorUtils.textColor,
             ),
           ),
         ),
@@ -954,7 +953,10 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
                     Padding(
                       child:Text(
                         AppLocalizations.of(context).getLanguageText('copy_ipfs'),
-                        style: TextStyle(fontSize:12),
+                        style: TextStyle(
+                          fontSize:12,
+                          color: ColorUtils.textColor
+                        ),
                       ),
                       padding:EdgeInsets.all(8),
                     ),
@@ -970,6 +972,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
       ];
     }
     return SimpleDialog(
+      backgroundColor: ColorUtils.themeColor,
       children: body,
     );
   }
@@ -994,18 +997,22 @@ class ContentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var itemIcon = "images/ic_tag.png";
     var itemIconColor = ColorUtils.getTagColor();
+    var itemIconBgColor = ColorUtils.getTagBgColor();
     switch (contentDetail.type) {
       case PasswordType:
         itemIcon = "images/ic_key.png";
         itemIconColor = ColorUtils.getPasswordColor();
+        itemIconBgColor = ColorUtils.getPasswordBgColor();
         break;
       case TextType:
         itemIcon = "images/ic_file-text.png";
         itemIconColor = ColorUtils.getTextColor();
+        itemIconBgColor = ColorUtils.getTextBgColor();
         break;
       case TOTPType:
         itemIcon = "images/ic_stopwatch.png";
         itemIconColor = ColorUtils.getTotpColor();
+        itemIconBgColor = ColorUtils.getTotpBgColor();
         break;
     }
     return InkWell(
@@ -1021,7 +1028,8 @@ class ContentItem extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 7.0,vertical: 0.0),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: itemIconColor,
+                  color: itemIconBgColor,
+                  border: Border.all(color: itemIconColor),
                   borderRadius: BorderRadius.all(Radius.circular(999.0))
               ),
               child: Image.asset(itemIcon, width: 16.0, height: 16.0),
@@ -1031,13 +1039,13 @@ class ContentItem extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(left: 5.0, top: 13.0, bottom: 13.0),
                 decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[200])),
+                  border: Border(bottom: BorderSide(color: ColorUtils.divider)),
                 ),
                 child: Text(
                   contentDetail.title,
                   style: TextStyle(
                     fontSize: 14.0,
-                    color: const Color(0xff434343),
+                    color: ColorUtils.textColor,
                   ),
                 ),
               ),

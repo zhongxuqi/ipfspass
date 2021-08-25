@@ -412,6 +412,14 @@ class AppLocalizations {
       "en": "Download IPFS Content fail",
       "zh": "下载IPFS内容失败",
     },
+    "temp_pass_wrong": {
+      "en": "Temporary password wrong",
+      "zh": "临时密码错误",
+    },
+    "save": {
+      "en": "Save",
+      "zh": "保存",
+    },
   };
 
   String getLanguageText(String textID) {

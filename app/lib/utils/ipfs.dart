@@ -17,9 +17,8 @@ class IPFSUtils {
 
   static Future<Response> downloadFromIPFS(String contentID) async {
     // todo 获取gateway
-    var url = "https://ipfs.io/ipfs/<cidv1>".replaceAll("<cidv1>", contentID);
-    print("===>>> url $url");
+    var url = "https://<cidv1>.ipfs.infura-ipfs.io/".replaceAll("<cidv1>", contentID);
     var dio = Dio();
-    return dio.get(url).timeout(Duration(seconds: 5));
+    return dio.get(url).timeout(Duration(seconds: 10));
   }
 }

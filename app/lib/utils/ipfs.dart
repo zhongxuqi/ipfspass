@@ -5,7 +5,7 @@ class IPFSUtils {
   static String readGateway = "";
   static String writeGateway = "";
 
-  static void initGateway() async {
+  static initGateway() async {
     if (readGateway.isNotEmpty && writeGateway.isNotEmpty) return;
     var response = await dio.get('https://ipfs.easypass.tech/api/ipfs').timeout(Duration(seconds: 5));
     if (response.data["errno"] != 0) {
@@ -27,9 +27,14 @@ class IPFSUtils {
     return dio.get('https://ipfs.easypass.tech/api/ipfs/cid/base32', queryParameters: {'arg': contentID}).timeout(Duration(seconds: 5));
   }
 
-  static Future<Response> downloadFromIPFS(String contentID) async {
+  static Future<String> getContentUrl(String contentIDV1) async {
     await initGateway();
-    var url = readGateway.replaceAll("<cidv1>", contentID);
+    return readGateway.replaceAll("<cidv1>", contentIDV1);
+  }
+
+  static Future<Response> downloadFromIPFS(String contentIDV1) async {
+    await initGateway();
+    var url = await getContentUrl(contentIDV1);
     return dio.get(url).timeout(Duration(seconds: 10));
   }
 }

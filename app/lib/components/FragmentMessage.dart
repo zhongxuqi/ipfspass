@@ -481,7 +481,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
           ));
         }
         body.add(Container(
-          padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
+          padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
           child: InkWell(
             splashColor: Colors.white,
             highlightColor: Colors.white,
@@ -490,14 +490,14 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
               padding: EdgeInsets.all(5.0),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: ColorUtils.green,
                 borderRadius: BorderRadius.circular(5.0),
               ),
               child: Text(
                 AppLocalizations.of(context).getLanguageText('add_key'),
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 15.0,
+                  fontSize: 16.0,
                 ),
               ),
             ),

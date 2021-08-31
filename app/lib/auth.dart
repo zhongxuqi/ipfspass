@@ -123,71 +123,66 @@ class AuthPageState extends State<AuthPage> {
                       ),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            margin: EdgeInsets.only(left: 30.0, right: 5.0),
-                            decoration: BoxDecoration(
-                              color: ColorUtils.themeLightColor,
-                              borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                            ),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  height: 40.0,
-                                  width: 40.0,
-                                  child: Icon(
-                                    IconFonts.lock,
-                                    size: 22.0,
-                                    color: ColorUtils.white,
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    height: 40,
-                                    child: TextField(
-                                      controller: masterPasswordCtl,
-                                      scrollPadding: EdgeInsets.all(0),
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(0),
-                                          gapPadding: 0,
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent,
-                                              width: 0,
-                                              style: BorderStyle.none
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(0),
-                                          gapPadding: 0,
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent,
-                                              width: 0,
-                                              style: BorderStyle.none
-                                          ),
-                                        ),
-                                        fillColor: Colors.transparent,
-                                        hintText: AppLocalizations.of(context).getLanguageText('input_masterpassword_hint'),
-                                        hintStyle: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15.0,
-                                          textBaseline: TextBaseline.alphabetic,
+                        Container(
+                          margin: EdgeInsets.only(left: 30.0, right: 5.0),
+                          decoration: BoxDecoration(
+                            color: ColorUtils.themeLightColor,
+                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          ),
+                          constraints: BoxConstraints(
+                            maxWidth: 300,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  height: 40,
+                                  child: TextField(
+                                    controller: masterPasswordCtl,
+                                    scrollPadding: EdgeInsets.all(0),
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                        gapPadding: 0,
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 0,
+                                            style: BorderStyle.none
                                         ),
                                       ),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16.0,
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                        gapPadding: 0,
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 0,
+                                            style: BorderStyle.none
+                                        ),
+                                      ),
+                                      fillColor: Colors.transparent,
+                                      hintText: AppLocalizations.of(context).getLanguageText('input_masterpassword_hint'),
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.0,
                                         textBaseline: TextBaseline.alphabetic,
                                       ),
                                     ),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.0,
+                                      textBaseline: TextBaseline.alphabetic,
+                                    ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                         Container(

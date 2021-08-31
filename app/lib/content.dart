@@ -13,6 +13,7 @@ import 'components/AddKeyDialog.dart';
 import 'utils/colors.dart';
 import 'components/LoadingDialog.dart';
 import 'components/ContentItem.dart';
+import 'components/IPFSInfoDialog.dart';
 
 class ContentPage extends StatefulWidget {
   final VoidCallback refreshCallback;
@@ -383,8 +384,8 @@ class ContentPageState extends State<ContentPage> {
         margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: MediaQuery.of(context).size.width * 0.07),
         padding: EdgeInsets.symmetric(vertical: 7.0),
         child: InkWell(
-          splashColor: Colors.white,
-          highlightColor: Colors.white,
+          splashColor: ColorUtils.white,
+          highlightColor: ColorUtils.white,
           borderRadius: BorderRadius.circular(5.0),
           child: Container(
             padding: EdgeInsets.all(10.0),
@@ -468,6 +469,16 @@ class ContentPageState extends State<ContentPage> {
                   ),
                   onClickListener: () {
                     uploadIPFS();
+                  },
+                ),
+                if (contentDetail != null && (contentDetail.content_id != null && contentDetail.content_id.isNotEmpty)) ContentTopBarAction(
+                  text: Icon(
+                    IconFonts.online,
+                    color: ColorUtils.green,
+                    size: 25.0,
+                  ),
+                  onClickListener: () {
+                    showIPFSInfoDialog(context, contentID: contentDetail.content_id);
                   },
                 ),
                 ContentTopBarAction(

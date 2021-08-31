@@ -15,6 +15,7 @@ import 'LoadingDialog.dart';
 import 'FormInput.dart';
 import 'Toast.dart';
 import '../utils/ipfs.dart';
+import 'IPFSInfoDialog.dart';
 
 class FragmentContent extends StatefulWidget {
   String keyword = '';
@@ -416,7 +417,7 @@ class FragmentContentState extends State<FragmentContent> {
                               ):Container(),
                               if (item.content_id.isEmpty) ActionItem(
                                 icon: 'images/ic_upload.png',
-                                color: ColorUtils.green,
+                                color: ColorUtils.orange,
                                 text: AppLocalizations.of(context).getLanguageText('upload_ipfs'),
                                 onClickListener: () async {
                                   Navigator.of(context).pop();
@@ -435,6 +436,15 @@ class FragmentContentState extends State<FragmentContent> {
                                       }
                                     });
                                   });
+                                },
+                              ),
+                              if (item.content_id.isNotEmpty) ActionItem(
+                                icon: 'images/ic_online.png',
+                                color: ColorUtils.green,
+                                text: AppLocalizations.of(context).getLanguageText('ipfs_content_info'),
+                                onClickListener: () async {
+                                  Navigator.of(context).pop();
+                                  showIPFSInfoDialog(context, contentID: item.content_id);
                                 },
                               ),
                               ActionItem(

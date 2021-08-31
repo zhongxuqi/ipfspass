@@ -420,6 +420,18 @@ class AppLocalizations {
       "en": "Save",
       "zh": "保存",
     },
+    "ipfs_content_url": {
+      "en": "IPFS Content URL",
+      "zh": "IPFS内容URL",
+    },
+    "network_error": {
+      "en": "Network Error",
+      "zh": "网络错误",
+    },
+    "ipfs_content_info": {
+      "en": "IPFS Content Info",
+      "zh": "IPFS内容信息",
+    },
   };
 
   String getLanguageText(String textID) {

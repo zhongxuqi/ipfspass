@@ -29,4 +29,5 @@ class IconFonts {
   static const IconData copy = IconData(0xf289, fontFamily: 'iconfont');
   static const IconData arrow_down = IconData(0xe644, fontFamily: 'iconfont');
   static const IconData download = IconData(0xe737, fontFamily: 'iconfont');
+  static const IconData database = IconData(0xe6eb, fontFamily: 'iconfont');
 }

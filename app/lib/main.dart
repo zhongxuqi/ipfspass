@@ -18,6 +18,7 @@ import 'utils/iconfonts.dart';
 import 'welcome.dart';
 import 'common/types.dart' as types;
 import 'components/ImportFromIPFSDialog.dart';
+import 'utils/content.dart';
 
 void main() {
   runApp(MyApp());
@@ -341,6 +342,18 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                               color: ColorUtils.white,
                               fontWeight: FontWeight.bold,
                             ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('backup_content'),
+                            iconData: IconFonts.download,
+                            isActive: false,
+                            onClick: () {
+                              Navigator.of(context).pop();
+                              backupContent(context);
+                            },
                           ),
                         ),
                         Container(

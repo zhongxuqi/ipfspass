@@ -287,6 +287,7 @@ class ModalMessageState extends State<ModalMessage> with TickerProviderStateMixi
             child: Text(
               AppLocalizations.of(context).getLanguageText('content_type'),
               style: TextStyle(
+                color: ColorUtils.white,
                 fontSize: 15.0,
                 fontWeight: FontWeight.bold,
               ),

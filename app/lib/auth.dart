@@ -10,6 +10,7 @@ import 'utils/iconfonts.dart';
 import 'utils/localization.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 
 class AuthPage extends StatefulWidget {
   final bool isLock;
@@ -26,10 +27,12 @@ class AuthPageState extends State<AuthPage> {
   var masterPasswordCtl = TextEditingController();
 
   @override
-    void initState() {
-      super.initState();
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 500), () {
       _authenticate();
-    }
+    });
+  }
 
   void unlock() {
     if (widget.isLock) {
@@ -133,7 +136,7 @@ class AuthPageState extends State<AuthPage> {
                             borderRadius: BorderRadius.all(Radius.circular(4.0)),
                           ),
                           constraints: BoxConstraints(
-                            maxWidth: 300,
+                            maxWidth: 220,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

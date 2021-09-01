@@ -131,6 +131,16 @@ class ImportFromIPFSDialogState extends State<ImportFromIPFSDialog> {
             errText: tempPasswordErr,
           ),
           Container(
+            margin: EdgeInsets.only(left: 10, right: 10.0, top: 10.0, bottom: 5.0),
+            child: Text(
+              "${AppLocalizations.of(context).getLanguageText('hint')}${this.contentMessage.hint}",
+              style: TextStyle(
+                color: ColorUtils.textColor,
+                fontSize: 15,
+              ),
+            ),
+          ),
+          Container(
             margin: EdgeInsets.only(top: 10.0),
             child: Row(
               children: <Widget>[

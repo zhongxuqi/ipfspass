@@ -432,6 +432,14 @@ class AppLocalizations {
       "en": "IPFS Content Info",
       "zh": "IPFS内容信息",
     },
+    "backup_content": {
+      "en": "Backup Content",
+      "zh": "备份内容",
+    },
+    "hint": {
+      "en": "Hint: ",
+      "zh": "提示语：",
+    },
   };
 
   String getLanguageText(String textID) {

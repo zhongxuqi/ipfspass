@@ -100,7 +100,13 @@ class ImportFromIPFSDialogState extends State<ImportFromIPFSDialog> {
                         }
                         String cidv1 = value.data["data"]["cid_v1"];
                         IPFSUtils.downloadFromIPFS(cidv1).then((value) {
-                          this.contentMessage = ContentMessage.fromJSON(json.encode(value.data));
+                          String dataStr = "";
+                          if (value.data is String) {
+                            dataStr = value.data;
+                          } else {
+                            dataStr = json.encode(value.data);
+                          }
+                          this.contentMessage = ContentMessage.fromJSON(dataStr);
                           this.step = 1;
                           setState(() {});
                         }).onError((e, s) {
@@ -179,7 +185,7 @@ class ImportFromIPFSDialogState extends State<ImportFromIPFSDialog> {
                       ),
                     ),
                     onTap: () async {
-                      if (this.contentMessage.passwordHash != await encrypt.sha256(tempPasswordCtl.text)) {
+                      if (this.contentMessage.passwordHash.isNotEmpty && this.contentMessage.passwordHash != await encrypt.sha256(tempPasswordCtl.text)) {
                         tempPasswordErr = AppLocalizations.of(context).getLanguageText("temp_pass_wrong");
                         setState(() {});
                         return;
@@ -197,6 +203,7 @@ class ImportFromIPFSDialogState extends State<ImportFromIPFSDialog> {
                         this.step = 2;
                         setState(() {});
                       } catch(e) {
+                        print("===>>> ${e.toString()}");
                         tempPasswordErr = AppLocalizations.of(context).getLanguageText("temp_pass_wrong");
                         setState(() {});
                       }

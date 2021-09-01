@@ -137,7 +137,11 @@ class ContentMessage {
   }
 
   static ContentMessage fromJSON(String jsonStr) {
-    var dataMap = json.decode(jsonStr);
-    return ContentMessage(hint: dataMap["hint"], passwordHash: dataMap["password_hash"], encryptedData: dataMap["encrypted_data"]);
+    try {
+      var dataMap = json.decode(jsonStr);
+      return ContentMessage(hint: dataMap["hint"], passwordHash: dataMap["password_hash"], encryptedData: dataMap["encrypted_data"]);
+    } catch (e) {
+      return ContentMessage(hint: '', passwordHash: '', encryptedData: jsonStr);
+    }
   }
 }

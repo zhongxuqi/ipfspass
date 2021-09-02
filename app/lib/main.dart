@@ -2,6 +2,7 @@ import 'package:app/auth.dart';
 import 'package:app/utils/localization.dart';
 import 'package:app/utils/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'components/AlertDialog.dart';
 import 'components/DrawerButton.dart';
 import 'components/FragmentContent.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return MaterialApp(
       title: 'IPFS Pass',
       theme: ThemeData(

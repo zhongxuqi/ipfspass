@@ -1099,7 +1099,7 @@ class ContentTotpItemState extends State<ContentTotpItem> {
                     child: Icon(
                       IconFonts.camera,
                       size: 18.0,
-                      color: Colors.black54,
+                      color: ColorUtils.white,
                     ),
                   ),
                   onTap: () async {

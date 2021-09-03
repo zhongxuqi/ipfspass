@@ -99,7 +99,6 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
     fragmentMessage = FragmentMessage();
     fragments.add(fragmentMessage);
-
   }
 
   @override
@@ -222,6 +221,11 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                                     fontSize: 16.0,
                                     textBaseline: TextBaseline.alphabetic,
                                   ),
+                                  onChanged: (value) {
+                                    if (_fragmentContentKey.currentState != null) {
+                                      _fragmentContentKey.currentState.setKeyword(value);
+                                    }
+                                  },
                                 ),
                               ),
                             ),

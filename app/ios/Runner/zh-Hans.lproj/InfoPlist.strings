@@ -1,0 +1,8 @@
+/*
+  InfoPlist.strings
+  Runner
+
+  Created by xuqi zhong on 2021/9/5.
+  
+*/
+CFBundleDisplayName = "IPFS密码管理";

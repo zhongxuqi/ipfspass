@@ -385,11 +385,11 @@ class AppLocalizations {
       "zh": "拷贝IPFS内容ID"
     },
     "send_exist_password": {
-      "en": "Send exist passord",
+      "en": "Send exist password",
       "zh": "发送现有密码",
     },
     "send_new_password": {
-      "en": "Send new passord",
+      "en": "Send new password",
       "zh": "发送新密码",
     },
     "upload_ipfs_fail": {

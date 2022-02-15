@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:app/utils/colors.dart';
+import 'package:app/utils/content.dart';
 import 'package:app/utils/localization.dart';
 import 'package:app/utils/store.dart';
 import 'package:flutter/material.dart';
-
+import 'package:file_picker/file_picker.dart';
 import 'components/LoginFormItem.dart';
 import 'main.dart';
 import 'utils/iconfonts.dart';
+import 'dart:io';
+import 'db/data.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,6 +42,28 @@ class LoginPageState extends State<LoginPage> {
       return;
     }
     await StoreUtils.setMasterPassword(registerMasterPasswordCtl.text);
+    await getDataModel().deleteAllContentInfo();
+    goMainPage();
+  }
+
+  void recoverDataFromBackupFile() async {
+    await getDataModel().deleteAllContentInfo();
+    FilePickerResult result = await FilePicker.platform.pickFiles();
+
+    if(result != null) {
+      File file = File(result.files.single.path);
+      var contentBackup = ContentBackup.fromMap(json.decode(utf8.decode(file.readAsBytesSync())));
+      StoreUtils.setRawMasterPassword(contentBackup.encryptedMasterPassword);
+      for (var contentInfo in contentBackup.contents) {
+        await getDataModel().upsertContentInfo(contentInfo, (id) {});
+      }
+      goMainPage();
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  void goMainPage() async {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) =>
@@ -138,6 +165,31 @@ class LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onTap: login,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      child: Container(
+                        width: 300,
+                        padding: EdgeInsets.symmetric(vertical: 10.0),
+                        decoration: BoxDecoration(
+                          color: ColorUtils.green,
+                          borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            AppLocalizations.of(context).getLanguageText('recover_data_from_backup_file'),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: recoverDataFromBackupFile,
                     ),
                   ),
                 ],

@@ -16,4 +16,18 @@ class IconFonts {
   static const IconData update = IconData(0xe641, fontFamily: 'iconfont');
   static const IconData setting = IconData(0xe66f, fontFamily: 'iconfont');
   static const IconData chat = IconData(0xe6e3, fontFamily: 'iconfont');
+  static const IconData circle = IconData(0xe648, fontFamily: 'iconfont');
+  static const IconData check_box_outline = IconData(0xe63e, fontFamily: 'iconfont');
+  static const IconData check_box_outline_bl = IconData(0xec58, fontFamily: 'iconfont');
+  static const IconData camera = IconData(0xe603, fontFamily: 'iconfont');
+  static const IconData add = IconData(0xe6fa, fontFamily: 'iconfont');
+  static const IconData online = IconData(0xe65e, fontFamily: 'iconfont');
+  static const IconData offline = IconData(0xe64d, fontFamily: 'iconfont');
+  static const IconData upload = IconData(0xe8e9, fontFamily: 'iconfont');
+  static const IconData eye = IconData(0xe775, fontFamily: 'iconfont');
+  static const IconData eyeslash = IconData(0xe6df, fontFamily: 'iconfont');
+  static const IconData copy = IconData(0xf289, fontFamily: 'iconfont');
+  static const IconData arrow_down = IconData(0xe644, fontFamily: 'iconfont');
+  static const IconData download = IconData(0xe737, fontFamily: 'iconfont');
+  static const IconData database = IconData(0xe6eb, fontFamily: 'iconfont');
 }

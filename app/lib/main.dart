@@ -1,15 +1,25 @@
+import 'package:app/auth.dart';
 import 'package:app/utils/localization.dart';
 import 'package:app/utils/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'components/AlertDialog.dart';
 import 'components/DrawerButton.dart';
+import 'components/FragmentContent.dart';
+import 'components/SortDialog.dart';
 import 'db/data.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'dart:async';
+import 'components/FragmentMessage.dart';
 import 'login.dart';
+import 'modifyMasterPassword.dart';
+import 'settings.dart';
 import 'utils/colors.dart';
 import 'utils/iconfonts.dart';
 import 'welcome.dart';
+import 'common/types.dart' as types;
+import 'components/ImportFromIPFSDialog.dart';
+import 'utils/content.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,6 +30,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return MaterialApp(
       title: 'IPFS Pass',
       theme: ThemeData(
@@ -56,11 +67,69 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<FragmentContentState> _fragmentContentKey = new GlobalKey<FragmentContentState>();
+
   var keywordCtl = TextEditingController();
   var focusNode = FocusNode();
   int _currentPageIndex = 0;
+
+  FragmentContent fragmentContent;
+  FragmentMessage fragmentMessage;
+  var fragments = <Widget>[];
+
+  Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    fragmentContent = FragmentContent(
+      key: _fragmentContentKey,
+      clearKeyWord: () {
+        keywordCtl.text = "";
+        if (_currentPageIndex == 0) {
+          _fragmentContentKey.currentState.setKeyword('');
+        }
+      },
+    );
+    fragments.add(fragmentContent);
+
+    fragmentMessage = FragmentMessage();
+    fragments.add(fragmentMessage);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    int lockTimeout = await StoreUtils.getLockScreen();
+    switch (state) {
+      case AppLifecycleState.paused:
+        timer = Timer(Duration(seconds: lockTimeout), () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AuthPage(isLock: true)),
+          );
+        });
+        break;
+      case AppLifecycleState.resumed:
+        if (timer != null) {
+          timer.cancel();
+          timer = null;
+        }
+        break;
+      default:
+        break;
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,6 +221,11 @@ class _MainPageState extends State<MainPage> {
                                     fontSize: 16.0,
                                     textBaseline: TextBaseline.alphabetic,
                                   ),
+                                  onChanged: (value) {
+                                    if (_fragmentContentKey.currentState != null) {
+                                      _fragmentContentKey.currentState.setKeyword(value);
+                                    }
+                                  },
                                 ),
                               ),
                             ),
@@ -177,7 +251,16 @@ class _MainPageState extends State<MainPage> {
                     ),
                     InkWell(
                       onTap: () async {
-                        
+                        final sortBy = await StoreUtils.getSortByKey();
+                        final sortType = await StoreUtils.getSortTypeKey();
+                        showSortDialog(context: context, sortBy: sortBy, sortType: sortType, callback: (types.SortBy sortBy, types.SortType sortType) async {
+                          await StoreUtils.setSortByKey(sortBy);
+                          await StoreUtils.setSortTypeKey(sortType);
+                          if (_fragmentContentKey != null && _fragmentContentKey.currentState != null) {
+                            _fragmentContentKey.currentState.initContentList();
+                          }
+                          Navigator.of(context).pop();
+                        });
                       },
                       child: Container(
                         width: 50.0,
@@ -192,6 +275,10 @@ class _MainPageState extends State<MainPage> {
                   ],
                 )
               ),
+            ),
+            Expanded(
+              flex: 1,
+              child: fragments[_currentPageIndex],
             ),
           ],
         ),
@@ -266,12 +353,28 @@ class _MainPageState extends State<MainPage> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
                           child: DrawerButton(
-                            text: AppLocalizations.of(context).getLanguageText('sync_data'),
-                            iconData: IconFonts.update,
+                            text: AppLocalizations.of(context).getLanguageText('backup_content'),
+                            iconData: IconFonts.download,
                             isActive: false,
                             onClick: () {
                               Navigator.of(context).pop();
-                              // todo 同步数据
+                              backupContent(context);
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                          child: DrawerButton(
+                            text: AppLocalizations.of(context).getLanguageText('import_from_ipfs'),
+                            iconData: IconFonts.download,
+                            isActive: false,
+                            onClick: () {
+                              Navigator.of(context).pop();
+                              showImportFromIPFSDialog(context, callback: () {
+                                if (_fragmentContentKey != null && _fragmentContentKey.currentState != null) {
+                                  _fragmentContentKey.currentState.initContentList();
+                                }
+                              });
                             },
                           ),
                         ),
@@ -283,7 +386,10 @@ class _MainPageState extends State<MainPage> {
                             isActive: false,
                             onClick: () {
                               Navigator.of(context).pop();
-                              // todo 修改主密码
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ModifyMasterPasswordPage()),
+                              );
                             },
                           ),
                         ),
@@ -316,18 +422,10 @@ class _MainPageState extends State<MainPage> {
                             isActive: false,
                             onClick: () {
                               Navigator.of(context).pop();
-                              // todo 设置
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
-                          child: DrawerButton(
-                            text: AppLocalizations.of(context).getLanguageText('feedback'),
-                            iconData: IconFonts.chat,
-                            isActive: false,
-                            onClick: () {
-                              // todo 反馈
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SettingsPage()),
+                              );
                             },
                           ),
                         ),

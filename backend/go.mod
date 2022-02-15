@@ -6,12 +6,14 @@ require (
 	github.com/btcsuite/btcd v0.22.0-beta // indirect
 	github.com/google/uuid v1.2.0 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20190812055157-5d271430af9f // indirect
+	github.com/ipfs/go-cid v0.1.0 // indirect
 	github.com/ipfs/go-ipfs-api v0.2.0
 	github.com/ipfs/go-ipfs-files v0.0.8
 	github.com/klauspost/cpuid/v2 v2.0.8 // indirect
 	github.com/libp2p/go-libp2p-core v0.8.5 // indirect
 	github.com/mattn/go-isatty v0.0.11 // indirect
 	github.com/multiformats/go-multiaddr v0.3.3 // indirect
+	github.com/multiformats/go-multibase v0.0.3 // indirect
 	github.com/multiformats/go-multihash v0.0.15 // indirect
 	github.com/smartystreets/assertions v1.0.1 // indirect
 	github.com/spf13/viper v1.8.1

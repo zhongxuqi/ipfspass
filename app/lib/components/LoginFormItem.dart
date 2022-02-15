@@ -45,18 +45,18 @@ class LoginFormItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(0),
                     gapPadding: 0,
                     borderSide: BorderSide(
-                        color: Colors.transparent,
-                        width: 0,
-                        style: BorderStyle.none
+                      color: Colors.transparent,
+                      width: 0,
+                      style: BorderStyle.none
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(0),
                     gapPadding: 0,
                     borderSide: BorderSide(
-                        color: Colors.transparent,
-                        width: 0,
-                        style: BorderStyle.none
+                      color: Colors.transparent,
+                      width: 0,
+                      style: BorderStyle.none
                     ),
                   ),
                   fillColor: Colors.transparent,

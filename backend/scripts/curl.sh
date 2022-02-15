@@ -16,6 +16,9 @@ curl "https://ipfs.itargo.io/ipfs/bafybeidutlmqfu62zhn36lapfi7i5iyxvqnte7fv7zhq2
 curl "https://ipfs.io/ipfs/bafybeidutlmqfu62zhn36lapfi7i5iyxvqnte7fv7zhq2rticzustk4rlq"
 curl "https://infura-ipfs.io/ipfs/bafybeidutlmqfu62zhn36lapfi7i5iyxvqnte7fv7zhq2rticzustk4rlq"
 
+
+curl -X OPTIONS -F file=@ipfspass.txt "https://ipfs.infura.io:5001/api/v0/add?hash=sha2-256&inline-limit=32"
+
 # 公共写入节点
 curl -X POST -F file=@ipfspass.txt "https://infura-ipfs.io:5001/api/v0/add?hash=sha2-256&inline-limit=32"
 curl -X POST -F file=@ipfspass.txt "https://ipfs.infura.io:5001/api/v0/add?hash=sha2-256&inline-limit=32"
